@@ -1,9 +1,17 @@
 const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 const { Pool } = require("pg");
 
 require("dotenv").config();
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 const pool = new Pool({
   user: process.env.USER,
@@ -71,9 +79,9 @@ app.post("/users/login", async (request, response) => {
 
   try {
     if (await bcrypt.compare(request.body.password, user.password)) {
-      response.send("Successfully Logged In");
+      response.json(user);
     } else {
-      response.send("Wrong Password");
+      response.error("Wrong Password");
     }
   } catch {
     response.status(500).send();

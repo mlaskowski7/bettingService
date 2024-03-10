@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LoginFormProps from "../types";
+import { LoginFormProps } from "../types";
 
 const LoginForm = ({ onLogin }: LoginFormProps) => {
   const [username, setUsername] = useState("");
