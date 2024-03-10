@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LoginForm } from "../components";
+import { LoginForm } from "./components";
 import { User } from "../types";
 import axios from "axios";
 
@@ -35,7 +35,7 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="">
       {user ? (
         <div>
           <span>Welcome, {user.username}</span>
