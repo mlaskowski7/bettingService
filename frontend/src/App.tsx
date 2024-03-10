@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LoginForm, RegistrationForm } from "./components";
+import { LoginForm, RegistrationForm, MainDashboard } from "./components";
 import { User } from "../types";
 import axios from "axios";
 import "./app.css";
@@ -54,12 +54,11 @@ const App = () => {
   };
 
   return (
-    <div className="">
+    <div className="bg-[#F5F5F5]">
       {user ? (
-        <div>
-          <span>Welcome, {user.username}</span>
-          <button onClick={handleLogOut}>Logout</button>
-        </div>
+        <Routes>
+          <Route path="/" element={<MainDashboard onLogout={handleLogOut} />} />
+        </Routes>
       ) : (
         <Routes>
           <Route path="/" element={<LoginForm onLogin={handleLogin} />} />
