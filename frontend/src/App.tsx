@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { LoginForm } from "./components";
+import { LoginForm, RegistrationForm } from "./components";
 import { User } from "../types";
 import axios from "axios";
+import "./app.css";
+import { Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -24,7 +26,24 @@ const App = () => {
       setUser({ username });
       console.log(localStorage.getItem("user"));
     } catch (error) {
-      console.error("Error while logging in: ", error);
+      alert(
+        "Something went wrong - Make sure you are providing valid credentials"
+      );
+    }
+  };
+
+  const handleRegister = async (username: string, password: string) => {
+    try {
+      const response = await axios.post("http://localhost:3000/users", {
+        username,
+        password,
+      });
+      localStorage.setItem("user", username);
+      setUser({ username });
+    } catch (error) {
+      alert(
+        "Something went wrong - Make sure you are providing valid credentials"
+      );
     }
   };
 
@@ -42,7 +61,13 @@ const App = () => {
           <button onClick={handleLogOut}>Logout</button>
         </div>
       ) : (
-        <LoginForm onLogin={handleLogin} />
+        <Routes>
+          <Route path="/" element={<LoginForm onLogin={handleLogin} />} />
+          <Route
+            path="/register"
+            element={<RegistrationForm onRegister={handleRegister} />}
+          />
+        </Routes>
       )}
     </div>
   );
