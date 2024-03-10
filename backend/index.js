@@ -19,7 +19,7 @@ const pool = new Pool({
   try {
     const { rows } = await client.query("SELECT current_user");
     const currentUser = rows[0]["current_user"];
-    console.log(currentUser);
+    console.log(`connected with postgreSQL as ${currentUser}`);
   } catch (error) {
     console.error(error);
   } finally {
@@ -80,4 +80,6 @@ app.post("/users/login", async (request, response) => {
   }
 });
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log(`Server running on port 3000`);
+});
