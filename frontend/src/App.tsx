@@ -10,18 +10,16 @@ const App = () => {
     console.log(localStorage.getItem("user"));
     const loggedUser = localStorage.getItem("user");
     if (loggedUser) {
-      const foundUser = loggedUser;
-      setUser(foundUser);
+      setUser({ username: loggedUser });
     }
   }, []);
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      axios.post("http://localhost:3000/users/login", {
+      const response = await axios.post("http://localhost:3000/users/login", {
         username,
         password,
       });
-      if()
       localStorage.setItem("user", username);
       setUser({ username });
       console.log(localStorage.getItem("user"));
