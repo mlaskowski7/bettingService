@@ -51,27 +51,21 @@ app.get("/users", async (request, response) => {
 });
 
 app.post("/users", async (request, response) => {
-  if (users.find((user) => user.username == request.body.username)) {
-    try {
-      const salt = await bcrypt.genSalt();
-      const hashedPassword = await bcrypt.hash(request.body.password, salt);
-      const user = {
-        username: request.body.username,
-        password: hashedPassword,
-      };
-      await pool.query(
-        'INSERT INTO "user" (username, password) VALUES ($1, $2)',
-        [user.username, user.password]
-      );
-      response
-        .status(201)
-        .send(`Successfully added new user - ${user.username}`);
-    } catch (error) {
-      console.error(error);
-      response.status(500).send();
-    }
-  } else {
-    alert("Account with this username already exists");
+  try {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(request.body.password, salt);
+    const user = {
+      username: request.body.username,
+      password: hashedPassword,
+    };
+    await pool.query(
+      'INSERT INTO "user" (username, password) VALUES ($1, $2)',
+      [user.username, user.password]
+    );
+    response.status(201).send(`Successfully added new user - ${user.username}`);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
   }
 });
 

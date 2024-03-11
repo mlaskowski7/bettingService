@@ -3,12 +3,18 @@ import { LoginForm, RegistrationForm, MainDashboard } from "./components";
 import { User } from "../types";
 import axios from "axios";
 import "./app.css";
-import { Route, Routes } from "react-router-dom";
+import { useNavigate, Route, Routes } from "react-router-dom";
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    try {
+      const response = axios.get("http://localhost:3000/users");
+    } catch (error) {
+      alert("Something went wrong with connecting to database");
+    }
     console.log(localStorage.getItem("user"));
     const loggedUser = localStorage.getItem("user");
     if (loggedUser) {
@@ -25,6 +31,7 @@ const App = () => {
       localStorage.setItem("user", username);
       setUser({ username });
       console.log(localStorage.getItem("user"));
+      navigate("/");
     } catch (error) {
       alert(
         "Something went wrong - Make sure you are providing valid credentials"
@@ -40,6 +47,7 @@ const App = () => {
       });
       localStorage.setItem("user", username);
       setUser({ username });
+      navigate("/");
     } catch (error) {
       alert(
         "Something went wrong - Make sure you are providing valid credentials"
