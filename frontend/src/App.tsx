@@ -11,7 +11,7 @@ const App = () => {
 
   useEffect(() => {
     try {
-      const response = axios.get("http://localhost:3000/users");
+      const response = axios.get("http://localhost:3000/api/users");
     } catch (error) {
       alert("Something went wrong with connecting to database");
     }
@@ -24,10 +24,13 @@ const App = () => {
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:3000/users/login", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/users/login",
+        {
+          username,
+          password,
+        }
+      );
       localStorage.setItem("user", username);
       setUser({ username });
       console.log(localStorage.getItem("user"));
@@ -41,7 +44,7 @@ const App = () => {
 
   const handleRegister = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:3000/users", {
+      const response = await axios.post("http://localhost:3000/api/users", {
         username,
         password,
       });

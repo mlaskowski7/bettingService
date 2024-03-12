@@ -10,14 +10,25 @@ type User = {
   id: number;
 };
 
+type Game = {
+  id: number;
+  home_team: string;
+  away_team: string;
+  winner: string | null;
+  description: string;
+  score: string | null;
+  date: string;
+};
+
 const MainDashboard = ({ onLogout }: MainDashboardProps) => {
   const [user, setUser] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
+  const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/users");
+        const response = await axios.get("http://localhost:3000/api/users");
         setUsers(response.data);
       } catch (error) {
         alert("Failed to fetch users - something is wrong");
@@ -25,11 +36,27 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
       }
     };
 
+    const getGames = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/games");
+        setGames(response.data);
+      } catch (error) {
+        alert("Failed to fetch games - something is wrong");
+        console.error(error);
+      }
+    };
+
     getUsers();
+    getGames();
 
     const loggedUser = localStorage.getItem("user") || "";
     setUser(loggedUser);
   }, []);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
+  };
 
   return (
     <div className="h-screen bg-[#F5F5F5]">
@@ -45,12 +72,36 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
           {user.toUpperCase()}
         </div>
       </div>
-      <div className="flex justify-between items-center m-10">
-        <div className=" w-[30%] rounded-md p-5">
-          <h1 className="font-bold text-[19px]">Leaderboard</h1>
+      <div className="flex justify-center items-center my-10">
+        <div className=" rounded-md p-5">
+          <h1 className="font-bold text-[25px] flex items-center gap-4 mb-5">
+            <img
+              className="w-[40px] h-[40px]"
+              src="/podium.png"
+              alt="leaderboard png"
+            />
+            <span>Leaderboard</span>
+          </h1>
           {users.map((user, index) => (
-            <p key={index}>
-              {user.username} : {user.points}
+            <p key={index} className="text-[19px]">
+              {user.username} : {user.points} pts.
+            </p>
+          ))}
+        </div>
+      </div>
+      <div className="flex justify-center gap-10">
+        <div className="rounded-md p-5 bg-gray-300 mr-10 w-[30%] flex flex-col gap-2 justify-center mt-5">
+          <h1 className="font-bold text-[25px] text-center flex items-center gap-4 mb-5">
+            <img
+              src="/game.png"
+              alt="games png"
+              className="w-[30px] h-[30px]"
+            />
+            <span>Upcoming Games</span>
+          </h1>
+          {games.map((game, index) => (
+            <p key={index} className="text-[19px] text-left items-start">
+              {game.home_team} vs. {game.away_team} on {formatDate(game.date)}
             </p>
           ))}
         </div>

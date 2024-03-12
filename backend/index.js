@@ -39,9 +39,39 @@ app.use(express.json());
 
 let users = [];
 
-app.get("/users", async (request, response) => {
+app.get("/api/games", async (request, response) => {
   try {
-    const data = await pool.query('SELECT * FROM "user"');
+    const data = await pool.query('SELECT * FROM game ORDER BY "date"');
+    games = data.rows;
+    response.status(200).send(data.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
+app.post("/api/games", async (request, response) => {
+  try {
+    const game = {
+      home_team: request.body.home_team,
+      away_team: request.body.away_team,
+      description: request.body.description,
+      date: request.body.date,
+    };
+    await pool.query(
+      "INSERT INTO game (home_team, away_team, description, date) VALUES ($1, $2, $3, $4)",
+      [game.home_team, game.away_team, game.description, game.date]
+    );
+    response.status(201).send();
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
+app.get("/api/users", async (request, response) => {
+  try {
+    const data = await pool.query('SELECT * FROM "user" ORDER BY points DESC');
     users = data.rows;
     response.status(200).send(data.rows);
   } catch (error) {
@@ -50,7 +80,7 @@ app.get("/users", async (request, response) => {
   }
 });
 
-app.post("/users", async (request, response) => {
+app.post("/api/users", async (request, response) => {
   try {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(request.body.password, salt);
@@ -69,7 +99,7 @@ app.post("/users", async (request, response) => {
   }
 });
 
-app.post("/users/login", async (request, response) => {
+app.post("/api/users/login", async (request, response) => {
   const user = users.find((user) => user.username == request.body.username);
 
   if (user == null)
