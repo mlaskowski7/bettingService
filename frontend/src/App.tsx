@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { LoginForm, RegistrationForm, MainDashboard } from "./components";
+import {
+  LoginForm,
+  RegistrationForm,
+  MainDashboard,
+  AdminDashboard,
+} from "./components";
 import { User } from "../types";
 import axios from "axios";
 import "./app.css";
@@ -69,6 +74,7 @@ const App = () => {
       {user ? (
         <Routes>
           <Route path="/" element={<MainDashboard onLogout={handleLogOut} />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       ) : (
         <Routes>
