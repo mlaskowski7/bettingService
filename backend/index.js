@@ -69,6 +69,20 @@ app.post("/api/games", async (request, response) => {
   }
 });
 
+app.put("/api/scores/:id", async (request, response) => {
+  try {
+    await pool.query("UPDATE game SET winner = $1, score = $2 WHERE id = $3", [
+      request.body.winner,
+      request.body.score,
+      request.params.id,
+    ]);
+    response.status(201).send();
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
 app.get("/api/users", async (request, response) => {
   try {
     const data = await pool.query('SELECT * FROM "user" ORDER BY points DESC');

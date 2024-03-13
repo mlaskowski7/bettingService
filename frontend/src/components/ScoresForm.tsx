@@ -1,13 +1,62 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 // YOU HAVE TO ADD GAME ID FROM PARAMS THAT IS THE ONE THAT SHOULD BE UPDATED
 
-const ScoresForm = () => {
-  const [winner, setWinner] = useState("");
-  const [score, setScore] = useState("");
+type Game = {
+  id: number;
+  home_team: string;
+  away_team: string;
+  winner: string | null;
+  description: string;
+  score: string | null;
+  date: string;
+};
 
-  const handleSubmit = () => {};
+const ScoresForm = () => {
+  const [winner, setWinner] = useState<string>("");
+  const [score, setScore] = useState<string>("");
+  const [game, setGame] = useState<Game | null>(null);
+  const navigate = useNavigate();
+
+  const { id } = useParams<{ id: string }>();
+
+  useEffect(() => {
+    const getGame = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/games");
+        const foundGame = response.data.find(
+          (game: Game) => game.id === Number(id)
+        );
+        if (foundGame) {
+          setGame(foundGame);
+        } else {
+          alert("Game not found");
+          console.log("Game not found");
+        }
+      } catch (error) {
+        alert("Failed to fetch games - something is wrong");
+        console.error(error);
+      }
+    };
+
+    getGame();
+  }, [id]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:3000/api/scores/${id}`, {
+        winner,
+        score,
+      });
+      navigate("/");
+    } catch (error) {
+      alert("Something went wrong");
+      console.error(error);
+    }
+  };
 
   return (
     <form
@@ -15,7 +64,8 @@ const ScoresForm = () => {
       className="w-screen h-screen bg-[#F5F5F5] flex justify-center items-center flex-col gap-6 text-black"
     >
       <h2 className="mb-5 text-[20px]">
-        Please provide data about the final score and winner of the game
+        Please provide data about the final score and winner of the game -{" "}
+        {game?.home_team} vs. {game?.away_team}
       </h2>
       <div className="">
         <label className="font-bold">Winner: </label>
@@ -24,6 +74,7 @@ const ScoresForm = () => {
           type="text"
           value={winner}
           onChange={(e) => setWinner(e.target.value)}
+          placeholder="same name as above..."
         />
       </div>
       <div>
@@ -33,6 +84,7 @@ const ScoresForm = () => {
           type="text"
           value={score}
           onChange={(e) => setScore(e.target.value)}
+          placeholder="score in format 1-0..."
         />
       </div>
       <button

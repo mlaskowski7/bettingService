@@ -28,7 +28,12 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (username: string, password: string) => {
+  const handleLogin = async (
+    e: React.FormEvent,
+    username: string,
+    password: string
+  ) => {
+    e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:3000/api/users/login",
@@ -48,7 +53,12 @@ const App = () => {
     }
   };
 
-  const handleRegister = async (username: string, password: string) => {
+  const handleRegister = async (
+    e: React.FormEvent,
+    username: string,
+    password: string
+  ) => {
+    e.preventDefault();
     try {
       const response = await axios.post("http://localhost:3000/api/users", {
         username,
@@ -76,7 +86,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<MainDashboard onLogout={handleLogOut} />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/scores" element={<ScoresForm />} />
+          <Route path="/scores/:id" element={<ScoresForm />} />
         </Routes>
       ) : (
         <Routes>

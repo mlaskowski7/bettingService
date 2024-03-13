@@ -8,7 +8,8 @@ const AdminDashboard = () => {
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       axios.post("http://localhost:3000/api/games", {
         home_team: home,

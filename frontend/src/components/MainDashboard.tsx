@@ -104,11 +104,20 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
             />
             <span>Upcoming Games</span>
           </h1>
-          {games.map((game, index) => (
-            <p key={index} className="text-[19px] text-left items-start">
-              {game.home_team} vs. {game.away_team} on {formatDate(game.date)}
-            </p>
-          ))}
+          {games.map((game, index) => {
+            if (!game.winner) {
+              return (
+                <Link
+                  to={`/scores/${game.id}`}
+                  key={index}
+                  className="text-[19px] text-left items-start hover:text-blue-500 transition-all ease-in-out duration-300"
+                >
+                  {game.home_team} vs. {game.away_team} on{" "}
+                  {formatDate(game.date)}
+                </Link>
+              );
+            }
+          })}
         </div>
       </div>
       <div className="flex justify-center items-center flex-col p-5">
