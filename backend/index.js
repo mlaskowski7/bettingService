@@ -92,7 +92,7 @@ app.post("/api/bets", async (request, response) => {
       score: request.body.score,
     };
     await pool.query(
-      "INSERT INTO bet (user_id, game_id, winner, score) VALUES ($1,$2,$3,$4)",
+      "INSERT INTO bet (user_id, game_id, winner, final_score) VALUES ($1,$2,$3,$4)",
       [bet.user_id, bet.game_id, bet.winner, bet.score]
     );
     response.status(201).send();
@@ -131,12 +131,105 @@ app.post("/api/users", async (request, response) => {
     const user = {
       username: request.body.username,
       password: hashedPassword,
+      points: 0,
     };
     await pool.query(
-      'INSERT INTO "user" (username, password) VALUES ($1, $2)',
-      [user.username, user.password]
+      'INSERT INTO "user" (username, password, points) VALUES ($1, $2, $3)',
+      [user.username, user.password, user.points]
     );
     response.status(201).send(`Successfully added new user - ${user.username}`);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
+app.put("/api/pointsWin", async (request, response) => {
+  const username = request.body.username;
+  try {
+    // Query the database for the user
+    const userResult = await pool.query(
+      'SELECT * FROM "user" WHERE username = $1',
+      [username]
+    );
+    if (userResult.rows.length === 0) {
+      return response.status(404).send("User not found");
+    }
+    const user = userResult.rows[0];
+
+    // Check if user has an id
+    if (!user.id) {
+      return response.status(404).send("User ID not found");
+    }
+
+    // Update the user's points
+    await pool.query('UPDATE "user" SET points = points + 1 WHERE id = $1', [
+      user.id,
+    ]);
+    response.status(200).send("Points updated successfully.");
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("An error occurred while updating points.");
+  }
+});
+
+app.put("/api/pointsScore", async (request, response) => {
+  const username = request.body.username;
+  try {
+    // Query the database for the user
+    const userResult = await pool.query(
+      'SELECT * FROM "user" WHERE username = $1',
+      [username]
+    );
+    if (userResult.rows.length === 0) {
+      return response.status(404).send("User not found");
+    }
+    const user = userResult.rows[0];
+
+    // Check if user has an id
+    if (!user.id) {
+      return response.status(404).send("User ID not found");
+    }
+
+    // Update the user's points
+    await pool.query('UPDATE "user" SET points = points + 2 WHERE id = $1', [
+      user.id,
+    ]);
+    response.status(200).send("Points updated successfully.");
+  } catch (error) {
+    console.error(error);
+    response.status(500).send("An error occurred while updating points.");
+  }
+});
+
+app.delete("/api/bet/:id", async (request, response) => {
+  const bet_id = parseInt(request.params.id, 10); // Ensure the parameter is treated as a number
+  try {
+    await pool.query("DELETE FROM bet WHERE id=$1", [bet_id]); // Assuming the primary key column is named `id`
+    response.status(200).send(`Bet with ID ${bet_id} was deleted.`);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
+app.delete("/api/game/:id", async (request, response) => {
+  const game_id = parseInt(request.params.id, 10); // Ensure the parameter is treated as a number
+  try {
+    await pool.query("DELETE FROM game WHERE id=$1", [game_id]); // Assuming the primary key column is named `id`
+    response.status(200).send(`Game with ID ${game_id} was deleted.`);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
+app.put("/api/pointsScore", async (request, response) => {
+  const user = users.find((user) => user.username == request.body.username);
+  try {
+    await pool.query('UPDATE "user" SET points=points+2 WHERE id=$1', [
+      user.id,
+    ]);
   } catch (error) {
     console.error(error);
     response.status(500).send();

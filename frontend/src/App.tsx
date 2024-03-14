@@ -6,6 +6,7 @@ import {
   AdminDashboard,
   ScoresForm,
   Leaderboard,
+  BetForm,
 } from "./components";
 import { User } from "../types";
 import axios from "axios";
@@ -64,13 +65,14 @@ const App = () => {
   };
 
   return (
-    <div className="bg-[#F5F5F5]">
+    <div>
       {user ? (
         <Routes>
           <Route path="/" element={<MainDashboard onLogout={handleLogOut} />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/scores/:id" element={<ScoresForm />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/bets/:id" element={<BetForm />} />
         </Routes>
       ) : (
         <Routes>

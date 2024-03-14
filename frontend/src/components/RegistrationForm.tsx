@@ -6,7 +6,7 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onRegister(username, password);
   };

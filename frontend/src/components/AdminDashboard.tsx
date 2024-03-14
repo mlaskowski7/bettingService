@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [home, setHome] = useState<string>("");
   const [away, setAway] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,6 +18,7 @@ const AdminDashboard = () => {
         description: description,
         date: date,
       });
+      navigate("/");
     } catch (error) {
       console.error(error);
       alert("Something went wrong");

@@ -21,10 +21,19 @@ type Game = {
   date: string;
 };
 
+type Bet = {
+  id: number;
+  user_id: number;
+  game_id: number;
+  final_score: string;
+  winner: string;
+};
+
 const MainDashboard = ({ onLogout }: MainDashboardProps) => {
   const [user, setUser] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [games, setGames] = useState<Game[]>([]);
+  const [bets, setBets] = useState<Bet[]>([]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -47,12 +56,46 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
       }
     };
 
+    const getBets = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/bets");
+        setBets(response.data);
+      } catch (error) {
+        alert("Something went wrong with getting bets data");
+        console.error(error);
+      }
+    };
+
     getUsers();
+    getBets();
     getGames();
+
+    games.forEach((game) => {
+      bets.forEach((bet) => {
+        if (game.winner && game.score) {
+          if (game.winner === bet.winner) {
+            axios.put("http://localhost:3000/api/pointsWin", {
+              username: user,
+            });
+          }
+          if (game.score === bet.final_score) {
+            axios.put("http://localhost:3000/api/pointsScore", {
+              username: user,
+            });
+          }
+        }
+        try {
+          axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
+        } catch (error) {
+          alert("Error while deleting bet");
+          console.error(error);
+        }
+      });
+    });
 
     const loggedUser = localStorage.getItem("user") || "";
     setUser(loggedUser);
-  }, []);
+  }, [bets, games, user]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -60,7 +103,7 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
   };
 
   return (
-    <div className="h-screen bg-[#F5F5F5]">
+    <div className="">
       <div className="z-0 h-12 bg-red-600 flex justify-between items-center">
         <div>
           <button
@@ -130,7 +173,7 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
           </div>
           <Link
             to={"/admin"}
-            className=" text-white bg-red-600 rounded-lg py-4 px-5 text-md hover:bg-transparent hover:bg-blue-600 transition-all duration-300 ease-in-out"
+            className=" text-white bg-red-600 rounded-lg py-4 px-5 text-md border-2 border-red-600 hover:bg-transparent hover:text-red-600 transition-all duration-300 ease-in-out my-3"
           >
             Add Upcoming Games
           </Link>
@@ -151,7 +194,7 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
               if (!game.winner) {
                 return (
                   <Link
-                    to={`/scores/${game.id}`}
+                    to={`/bets/${game.id}`}
                     key={index}
                     className="text-[19px] text-left items-start hover:text-blue-500 transition-all ease-in-out duration-300"
                   >
