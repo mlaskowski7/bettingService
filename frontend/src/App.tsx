@@ -5,6 +5,7 @@ import {
   MainDashboard,
   AdminDashboard,
   ScoresForm,
+  Leaderboard,
 } from "./components";
 import { User } from "../types";
 import axios from "axios";
@@ -16,11 +17,6 @@ const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const response = axios.get("http://localhost:3000/api/users");
-    } catch (error) {
-      alert("Something went wrong with connecting to database");
-    }
     console.log(localStorage.getItem("user"));
     const loggedUser = localStorage.getItem("user");
     if (loggedUser) {
@@ -28,20 +24,12 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (
-    e: React.FormEvent,
-    username: string,
-    password: string
-  ) => {
-    e.preventDefault();
+  const handleLogin = async (username: string, password: string) => {
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/users/login",
-        {
-          username,
-          password,
-        }
-      );
+      await axios.post("http://localhost:3000/api/users/login", {
+        username,
+        password,
+      });
       localStorage.setItem("user", username);
       setUser({ username });
       console.log(localStorage.getItem("user"));
@@ -53,14 +41,9 @@ const App = () => {
     }
   };
 
-  const handleRegister = async (
-    e: React.FormEvent,
-    username: string,
-    password: string
-  ) => {
-    e.preventDefault();
+  const handleRegister = async (username: string, password: string) => {
     try {
-      const response = await axios.post("http://localhost:3000/api/users", {
+      await axios.post("http://localhost:3000/api/users", {
         username,
         password,
       });
@@ -87,6 +70,7 @@ const App = () => {
           <Route path="/" element={<MainDashboard onLogout={handleLogOut} />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/scores/:id" element={<ScoresForm />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Routes>
       ) : (
         <Routes>

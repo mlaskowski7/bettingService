@@ -77,64 +77,91 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
           {user.toUpperCase()}
         </div>
       </div>
-      <div className="flex justify-center items-center my-10">
+      <div className="flex justify-center items-center">
         <div className=" rounded-md p-5">
-          <h1 className="font-bold text-[25px] flex items-center gap-4 mb-5">
+          <Link
+            to={"/leaderboard"}
+            className="font-bold text-[25px] flex items-center gap-4 mb-5 hover:text-blue-600 transition-all ease-in-out duration-300"
+          >
             <img
               className="w-[40px] h-[40px]"
               src="/podium.png"
               alt="leaderboard png"
             />
             <span>Leaderboard</span>
-          </h1>
-          {users.map((user, index) => (
-            <p key={index} className="text-[19px]">
-              {user.username} : {user.points} pts.
-            </p>
-          ))}
-        </div>
-      </div>
-      <div className="flex justify-center gap-10">
-        <div className="rounded-md p-5 bg-gray-300 mr-10 w-[30%] flex flex-col gap-2 justify-center mt-5">
-          <h1 className="font-bold text-[25px] text-center flex items-center gap-4 mb-5">
-            <img
-              src="/game.png"
-              alt="games png"
-              className="w-[30px] h-[30px]"
-            />
-            <span>Upcoming Games</span>
-          </h1>
-          {games.map((game, index) => {
-            if (!game.winner) {
+          </Link>
+          {users.map((user, index) => {
+            if (index <= 3) {
               return (
-                <Link
-                  to={`/scores/${game.id}`}
-                  key={index}
-                  className="text-[19px] text-left items-start hover:text-blue-500 transition-all ease-in-out duration-300"
-                >
-                  {game.home_team} vs. {game.away_team} on{" "}
-                  {formatDate(game.date)}
-                </Link>
+                <p key={index} className="text-[19px] text-center">
+                  {user.username} : {user.points} pts.
+                </p>
               );
             }
           })}
         </div>
       </div>
-      <div className="flex justify-center items-center flex-col p-5">
-        <Link
-          to={"/admin"}
-          className=" text-white bg-blue-600 rounded-lg py-5 px-10 text-md hover:bg-transparent hover:text-black transition-all duration-300 ease-in-out"
-        >
-          Click To Add Upcoming Games
-        </Link>
-      </div>
-      <div className="flex justify-center items-center flex-col p-5">
-        <Link
-          to={"/scores"}
-          className=" text-white bg-red-600 rounded-lg py-5 px-10 text-md hover:bg-transparent hover:text-black transition-all duration-300 ease-in-out"
-        >
-          Click To Update Scores
-        </Link>
+      <div className="flex justify-between gap-1 mx-10">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <h1>Click on particular Game to update its score</h1>
+          <div className="rounded-md p-5 bg-gray-300 w-[100%] flex flex-col gap-2 justify-center mt-5">
+            <h1 className="font-bold text-[25px] text-center flex items-center gap-4 mb-5">
+              <img
+                src="/game.png"
+                alt="games png"
+                className="w-[30px] h-[30px]"
+              />
+              <span>Upcoming Games</span>
+            </h1>
+            {games.map((game, index) => {
+              if (!game.winner) {
+                return (
+                  <Link
+                    to={`/scores/${game.id}`}
+                    key={index}
+                    className="text-[19px] text-left items-start hover:text-blue-500 transition-all ease-in-out duration-300"
+                  >
+                    {game.home_team} vs. {game.away_team} on{" "}
+                    {formatDate(game.date)}
+                  </Link>
+                );
+              }
+            })}
+          </div>
+          <Link
+            to={"/admin"}
+            className=" text-white bg-red-600 rounded-lg py-4 px-5 text-md hover:bg-transparent hover:bg-blue-600 transition-all duration-300 ease-in-out"
+          >
+            Add Upcoming Games
+          </Link>
+        </div>
+
+        <div className="flex flex-col items-center justify-center">
+          <h1>Click on particular Game to place a bet on it</h1>
+          <div className="rounded-md p-5 bg-gray-300 w-[100%] flex flex-col gap-2 justify-center mt-5">
+            <h1 className="font-bold text-[25px] text-center flex items-center gap-4 mb-5">
+              <img
+                src="/bet.png"
+                alt="bets png"
+                className="w-[30px] h-[30px]"
+              />
+              <span>Place Your Bets</span>
+            </h1>
+            {games.map((game, index) => {
+              if (!game.winner) {
+                return (
+                  <Link
+                    to={`/scores/${game.id}`}
+                    key={index}
+                    className="text-[19px] text-left items-start hover:text-blue-500 transition-all ease-in-out duration-300"
+                  >
+                    {game.home_team} vs. {game.away_team}
+                  </Link>
+                );
+              }
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

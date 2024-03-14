@@ -83,6 +83,36 @@ app.put("/api/scores/:id", async (request, response) => {
   }
 });
 
+app.post("/api/bets", async (request, response) => {
+  try {
+    const bet = {
+      user_id: request.body.user_id,
+      game_id: request.body.game_id,
+      winner: request.body.winner,
+      score: request.body.score,
+    };
+    await pool.query(
+      "INSERT INTO bet (user_id, game_id, winner, score) VALUES ($1,$2,$3,$4)",
+      [bet.user_id, bet.game_id, bet.winner, bet.score]
+    );
+    response.status(201).send();
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
+app.get("/api/bets", async (request, response) => {
+  try {
+    const data = await pool.query("SELECT * FROM bet");
+    bets = data.rows;
+    response.status(200).send(data.rows);
+  } catch (error) {
+    console.error(error);
+    response.status(500).send();
+  }
+});
+
 app.get("/api/users", async (request, response) => {
   try {
     const data = await pool.query('SELECT * FROM "user" ORDER BY points DESC');

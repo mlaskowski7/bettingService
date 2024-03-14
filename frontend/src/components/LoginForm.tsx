@@ -6,7 +6,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     onLogin(username, password);
   };

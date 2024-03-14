@@ -3,6 +3,7 @@ import RegistrationForm from "./RegistrationForm";
 import MainDashboard from "./MainDashboard";
 import AdminDashboard from "./AdminDashboard";
 import ScoresForm from "./ScoresForm";
+import Leaderboard from "./Leaderboard";
 
 export {
   LoginForm,
@@ -10,4 +11,5 @@ export {
   MainDashboard,
   AdminDashboard,
   ScoresForm,
+  Leaderboard,
 };
