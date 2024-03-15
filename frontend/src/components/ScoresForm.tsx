@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // YOU HAVE TO ADD GAME ID FROM PARAMS THAT IS THE ONE THAT SHOULD BE UPDATED
 
@@ -14,11 +14,19 @@ type Game = {
   date: string;
 };
 
+type Bet = {
+  id: number;
+  user_id: number;
+  game_id: number;
+  final_score: string;
+  winner: string;
+};
+
 const ScoresForm = () => {
   const [winner, setWinner] = useState<string>("");
   const [score, setScore] = useState<string>("");
   const [game, setGame] = useState<Game | null>(null);
-  const navigate = useNavigate();
+  const [bets, setBets] = useState<Bet[]>([]);
 
   const { id } = useParams<{ id: string }>();
 
@@ -41,6 +49,17 @@ const ScoresForm = () => {
       }
     };
 
+    const getBets = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/bets");
+        setBets(response.data);
+      } catch (error) {
+        alert("Something went wrong with getting bets data");
+        console.error(error);
+      }
+    };
+    getBets();
+
     getGame();
   }, [id]);
 
@@ -51,16 +70,44 @@ const ScoresForm = () => {
         winner,
         score,
       });
-      navigate("/");
     } catch (error) {
       alert("Something went wrong");
       console.error(error);
+    }
+
+    const loggedUser = localStorage.getItem("user") || "";
+
+    if (game != null && loggedUser != "") {
+      const betsFiltered = bets.filter((bet) => bet.game_id == game.id);
+
+      for (const bet of betsFiltered) {
+        console.log(`score:${score}, bet:${bet.final_score}`);
+        console.log(`score:${winner}, bet:${bet.winner}`);
+        try {
+          if (score === bet.final_score) {
+            console.log("score");
+            await axios.put("http://localhost:3000/api/pointsScore", {
+              username: loggedUser,
+            });
+            await axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
+          } else if (winner === bet.winner) {
+            console.log("winner");
+            await axios.put("http://localhost:3000/api/pointsWin", {
+              username: loggedUser,
+            });
+            await axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
+          }
+        } catch (error) {
+          alert("Error while updating or deleting bet");
+          console.error(error);
+        }
+      }
     }
   };
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(e) => handleSubmit(e)}
       className="w-screen h-screen bg-[#F5F5F5] flex justify-center items-center flex-col gap-6 text-black"
     >
       <h2 className="mb-5 text-[20px]">

@@ -21,19 +21,10 @@ type Game = {
   date: string;
 };
 
-type Bet = {
-  id: number;
-  user_id: number;
-  game_id: number;
-  final_score: string;
-  winner: string;
-};
-
 const MainDashboard = ({ onLogout }: MainDashboardProps) => {
   const [user, setUser] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [games, setGames] = useState<Game[]>([]);
-  const [bets, setBets] = useState<Bet[]>([]);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -56,46 +47,12 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
       }
     };
 
-    const getBets = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/api/bets");
-        setBets(response.data);
-      } catch (error) {
-        alert("Something went wrong with getting bets data");
-        console.error(error);
-      }
-    };
-
     getUsers();
-    getBets();
     getGames();
-
-    games.forEach((game) => {
-      bets.forEach((bet) => {
-        if (game.winner && game.score) {
-          if (game.winner === bet.winner) {
-            axios.put("http://localhost:3000/api/pointsWin", {
-              username: user,
-            });
-          }
-          if (game.score === bet.final_score) {
-            axios.put("http://localhost:3000/api/pointsScore", {
-              username: user,
-            });
-          }
-        }
-        try {
-          axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
-        } catch (error) {
-          alert("Error while deleting bet");
-          console.error(error);
-        }
-      });
-    });
 
     const loggedUser = localStorage.getItem("user") || "";
     setUser(loggedUser);
-  }, [bets, games, user]);
+  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

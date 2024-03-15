@@ -213,17 +213,6 @@ app.delete("/api/bet/:id", async (request, response) => {
   }
 });
 
-app.delete("/api/game/:id", async (request, response) => {
-  const game_id = parseInt(request.params.id, 10); // Ensure the parameter is treated as a number
-  try {
-    await pool.query("DELETE FROM game WHERE id=$1", [game_id]); // Assuming the primary key column is named `id`
-    response.status(200).send(`Game with ID ${game_id} was deleted.`);
-  } catch (error) {
-    console.error(error);
-    response.status(500).send();
-  }
-});
-
 app.put("/api/pointsScore", async (request, response) => {
   const user = users.find((user) => user.username == request.body.username);
   try {
