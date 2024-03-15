@@ -3,6 +3,7 @@ import { MainDashboardProps } from "../../types";
 import "../app.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Navbar } from ".";
 
 type User = {
   username: string;
@@ -61,22 +62,7 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
 
   return (
     <div className="">
-      <div className="z-0 h-12 bg-red-600 flex justify-between items-center">
-        <div>
-          <button
-            onClick={onLogout}
-            className="ml-10 text-black bg-white rounded-lg py-1 px-5 text-sm hover:bg-transparent hover:text-white transition-all duration-300 ease-in-out"
-          >
-            Logout
-          </button>
-        </div>
-        <div className="flex-grow flex justify-center items-center">
-          <div className="madimi text-white text-[30px]">Betting Service</div>
-        </div>
-        <div className="text-white text-[15px] font-semibold mr-10 cursor-default">
-          {user.toUpperCase()}
-        </div>
-      </div>
+      <Navbar onLogout={onLogout} user={user} />
       <div className="flex justify-center items-center">
         <div className=" rounded-md p-5">
           <Link

@@ -103,6 +103,7 @@ const ScoresForm = () => {
         }
       }
     }
+    alert("Scores have been updated. Now you can go back to main dashboard");
   };
 
   return (

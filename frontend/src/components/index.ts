@@ -5,6 +5,7 @@ import AdminDashboard from "./AdminDashboard";
 import ScoresForm from "./ScoresForm";
 import Leaderboard from "./Leaderboard";
 import BetForm from "./BetForm";
+import Navbar from "./Navbar";
 
 export {
   LoginForm,
@@ -14,4 +15,5 @@ export {
   ScoresForm,
   Leaderboard,
   BetForm,
+  Navbar,
 };

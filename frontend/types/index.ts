@@ -10,6 +10,11 @@ export interface MainDashboardProps {
   onLogout: () => void;
 }
 
+export interface LogoutFormProps {
+  onLogout: () => void;
+  user: string;
+}
+
 export interface User {
   username: string;
 }
