@@ -55,12 +55,11 @@ app.post("/api/games", async (request, response) => {
     const game = {
       home_team: request.body.home_team,
       away_team: request.body.away_team,
-      description: request.body.description,
       date: request.body.date,
     };
     await pool.query(
-      "INSERT INTO game (home_team, away_team, description, date) VALUES ($1, $2, $3, $4)",
-      [game.home_team, game.away_team, game.description, game.date]
+      "INSERT INTO game (home_team, away_team, date) VALUES ($1, $2, $3)",
+      [game.home_team, game.away_team, game.date]
     );
     response.status(201).send();
   } catch (error) {
@@ -71,11 +70,10 @@ app.post("/api/games", async (request, response) => {
 
 app.put("/api/scores/:id", async (request, response) => {
   try {
-    await pool.query("UPDATE game SET winner = $1, score = $2 WHERE id = $3", [
-      request.body.winner,
-      request.body.score,
-      request.params.id,
-    ]);
+    await pool.query(
+      "UPDATE game SET goals_home = $1, goals_away = $2 WHERE id = $3",
+      [request.body.goals_home, request.body.goals_away, request.params.id]
+    );
     response.status(201).send();
   } catch (error) {
     console.error(error);
@@ -88,12 +86,12 @@ app.post("/api/bets", async (request, response) => {
     const bet = {
       user_id: request.body.user_id,
       game_id: request.body.game_id,
-      winner: request.body.winner,
-      score: request.body.score,
+      goals_home: request.body.goals_home,
+      goals_away: request.body.goals_away,
     };
     await pool.query(
-      "INSERT INTO bet (user_id, game_id, winner, final_score) VALUES ($1,$2,$3,$4)",
-      [bet.user_id, bet.game_id, bet.winner, bet.score]
+      "INSERT INTO bet (user_id, game_id, goals_home, goals_away) VALUES ($1,$2,$3,$4)",
+      [bet.user_id, bet.game_id, bet.goals_home, bet.goals_away]
     );
     response.status(201).send();
   } catch (error) {
