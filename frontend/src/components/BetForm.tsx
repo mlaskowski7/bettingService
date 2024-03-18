@@ -8,15 +8,14 @@ type Game = {
   id: number;
   home_team: string;
   away_team: string;
-  winner: string | null;
-  description: string;
-  score: string | null;
+  goals_home: number | null;
+  goals_away: number | null;
   date: string;
 };
 
 const BetForm = () => {
-  const [winner, setWinner] = useState<string>("");
-  const [score, setScore] = useState<string>("");
+  const [goals_home, setGoals_home] = useState<number>(0);
+  const [goals_away, setGoals_away] = useState<number>(0);
   const [user_id, setUser_id] = useState<number | null>(null);
   const [game, setGame] = useState<Game | null>(null);
   const navigate = useNavigate();
@@ -54,8 +53,8 @@ const BetForm = () => {
       await axios.post(`http://localhost:3000/api/bets`, {
         user_id: user_id,
         game_id: game_id,
-        winner: winner,
-        score: score,
+        goals_home: goals_home,
+        goals_away: goals_away,
       });
       navigate("/");
     } catch (error) {
@@ -73,23 +72,21 @@ const BetForm = () => {
         Place your bet on game - {game?.home_team} vs. {game?.away_team}
       </h2>
       <div className="">
-        <label className="font-bold">Winner: </label>
+        <label className="font-bold">{game?.home_team} : </label>
         <input
           className="ml-5 bg-transparent border-2 border-white rounded-lg"
           type="text"
-          value={winner}
-          onChange={(e) => setWinner(e.target.value)}
-          placeholder="same name as above..."
+          value={goals_home}
+          onChange={(e) => setGoals_home(Number(e.target.value))}
         />
       </div>
       <div>
-        <label className="font-bold">Final Score:</label>
+        <label className="font-bold">{game?.away_team} : </label>
         <input
           className="ml-5 bg-transparent border-2 border-white rounded-lg"
           type="text"
-          value={score}
-          onChange={(e) => setScore(e.target.value)}
-          placeholder="score in format 1-0..."
+          value={goals_away}
+          onChange={(e) => setGoals_away(Number(e.target.value))}
         />
       </div>
       <button

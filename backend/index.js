@@ -144,6 +144,7 @@ app.post("/api/users", async (request, response) => {
 
 app.put("/api/pointsWin", async (request, response) => {
   const username = request.body.username;
+  const pointsMultiplied = request.body.multiplier * 1;
   try {
     // Query the database for the user
     const userResult = await pool.query(
@@ -161,8 +162,9 @@ app.put("/api/pointsWin", async (request, response) => {
     }
 
     // Update the user's points
-    await pool.query('UPDATE "user" SET points = points + 1 WHERE id = $1', [
+    await pool.query('UPDATE "user" SET points = points + $2 WHERE id = $1', [
       user.id,
+      pointsMultiplied,
     ]);
     response.status(200).send("Points updated successfully.");
   } catch (error) {
@@ -173,6 +175,7 @@ app.put("/api/pointsWin", async (request, response) => {
 
 app.put("/api/pointsScore", async (request, response) => {
   const username = request.body.username;
+  const pointsMultiplied = request.body.multiplier * 2;
   try {
     // Query the database for the user
     const userResult = await pool.query(
@@ -190,8 +193,9 @@ app.put("/api/pointsScore", async (request, response) => {
     }
 
     // Update the user's points
-    await pool.query('UPDATE "user" SET points = points + 2 WHERE id = $1', [
+    await pool.query('UPDATE "user" SET points = points + $2 WHERE id = $1', [
       user.id,
+      pointsMultiplied,
     ]);
     response.status(200).send("Points updated successfully.");
   } catch (error) {

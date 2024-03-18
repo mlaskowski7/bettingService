@@ -8,9 +8,9 @@ type Game = {
   id: number;
   home_team: string;
   away_team: string;
-  winner: string | null;
-  description: string;
-  score: string | null;
+  goals_home: number | null;
+  goals_away: number | null;
+  counter: number | null;
   date: string;
 };
 
@@ -18,15 +18,16 @@ type Bet = {
   id: number;
   user_id: number;
   game_id: number;
-  final_score: string;
-  winner: string;
+  goals_home: number;
+  goals_away: number;
 };
 
 const ScoresForm = () => {
-  const [winner, setWinner] = useState<string>("");
-  const [score, setScore] = useState<string>("");
+  const [goals_home, setGoals_home] = useState<number>(0);
+  const [goals_away, setGoals_away] = useState<number>(0);
   const [game, setGame] = useState<Game | null>(null);
   const [bets, setBets] = useState<Bet[]>([]);
+  const [multiplier, setMultiplier] = useState<number>(1);
 
   const { id } = useParams<{ id: string }>();
 
@@ -67,8 +68,8 @@ const ScoresForm = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:3000/api/scores/${id}`, {
-        winner,
-        score,
+        goals_home,
+        goals_away,
       });
     } catch (error) {
       alert("Something went wrong");
@@ -81,19 +82,21 @@ const ScoresForm = () => {
       const betsFiltered = bets.filter((bet) => bet.game_id == game.id);
 
       for (const bet of betsFiltered) {
-        console.log(`score:${score}, bet:${bet.final_score}`);
-        console.log(`score:${winner}, bet:${bet.winner}`);
         try {
-          if (score === bet.final_score) {
-            console.log("score");
+          if (goals_home == bet.goals_home && goals_away == bet.goals_away) {
             await axios.put("http://localhost:3000/api/pointsScore", {
               username: loggedUser,
+              multiplier: multiplier,
             });
             await axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
-          } else if (winner === bet.winner) {
+          } else if (
+            goals_home - goals_away > 0 ==
+            bet.goals_home - bet.goals_away > 0
+          ) {
             console.log("winner");
             await axios.put("http://localhost:3000/api/pointsWin", {
               username: loggedUser,
+              multiplier: multiplier,
             });
             await axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
           }
@@ -112,27 +115,34 @@ const ScoresForm = () => {
       className="w-screen h-screen bg-[#F5F5F5] flex justify-center items-center flex-col gap-6 text-black"
     >
       <h2 className="mb-5 text-[20px]">
-        Please provide data about the final score and winner of the game -{" "}
+        Please provide data about the final score of the game -{" "}
         {game?.home_team} vs. {game?.away_team}
       </h2>
       <div className="">
-        <label className="font-bold">Winner: </label>
+        <label className="font-bold">{game?.home_team}: </label>
         <input
           className="ml-5 bg-transparent border-2 border-white rounded-lg"
           type="text"
-          value={winner}
-          onChange={(e) => setWinner(e.target.value)}
-          placeholder="same name as above..."
+          value={goals_home}
+          onChange={(e) => setGoals_home(Number(e.target.value))}
         />
       </div>
       <div>
-        <label className="font-bold">Final Score:</label>
+        <label className="font-bold">{game?.away_team}: </label>
         <input
           className="ml-5 bg-transparent border-2 border-white rounded-lg"
           type="text"
-          value={score}
-          onChange={(e) => setScore(e.target.value)}
-          placeholder="score in format 1-0..."
+          value={goals_away}
+          onChange={(e) => setGoals_away(Number(e.target.value))}
+        />
+      </div>
+      <div>
+        <label className="font-bold">Points Multiplier: </label>
+        <input
+          className="ml-5 bg-transparent border-2 border-white rounded-lg"
+          type="text"
+          value={multiplier}
+          onChange={(e) => setMultiplier(Number(e.target.value))}
         />
       </div>
       <button

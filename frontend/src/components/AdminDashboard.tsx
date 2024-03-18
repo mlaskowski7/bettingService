@@ -2,12 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-
-
 const AdminDashboard = () => {
   const [home, setHome] = useState<string>("");
   const [away, setAway] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const navigate = useNavigate();
 
@@ -17,7 +14,6 @@ const AdminDashboard = () => {
       await axios.post("http://localhost:3000/api/games", {
         home_team: home,
         away_team: away,
-        description: description,
         date: date,
       });
       navigate("/");
@@ -50,15 +46,6 @@ const AdminDashboard = () => {
           type="text"
           value={away}
           onChange={(e) => setAway(e.target.value)}
-        />
-      </div>
-      <div>
-        <label className="font-bold">Description:</label>
-        <input
-          className="ml-5 bg-transparent border-2 border-white rounded-lg"
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
         />
       </div>
       <div>
