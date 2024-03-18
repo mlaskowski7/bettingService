@@ -16,9 +16,8 @@ type Game = {
   id: number;
   home_team: string;
   away_team: string;
-  winner: string | null;
-  description: string;
-  score: string | null;
+  goals_home: number | null;
+  goals_away: number | null;
   date: string;
 };
 
@@ -100,7 +99,7 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
               <span>Upcoming Games</span>
             </h1>
             {games.map((game, index) => {
-              if (!game.winner) {
+              if (!game.goals_home && !game.goals_away) {
                 return (
                   <Link
                     to={`/scores/${game.id}`}
@@ -134,7 +133,7 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
               <span>Place Your Bets</span>
             </h1>
             {games.map((game, index) => {
-              if (!game.winner) {
+              if (!game.goals_home && !game.goals_away) {
                 return (
                   <Link
                     to={`/bets/${game.id}`}
