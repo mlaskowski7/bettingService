@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import {
   LoginForm,
   RegistrationForm,
-  AdminDashboard,
   ScoresForm,
-  Leaderboard,
-  BetForm,
   Main,
+  NewGame,
+  MainDashboard,
+  BetForm,
 } from "./components";
 import axios from "axios";
 import "./app.css";
@@ -103,9 +103,9 @@ const App = () => {
               />
             }
           />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin" element={<MainDashboard />} />
+          <Route path="/admin/newGame" element={<NewGame />} />
           <Route path="/scores/:id" element={<ScoresForm />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/bets/:id" element={<BetForm />} />
         </Routes>
       ) : (

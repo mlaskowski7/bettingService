@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const AdminDashboard = () => {
+const NewGame = () => {
   const [home, setHome] = useState<string>("");
   const [away, setAway] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -64,10 +64,10 @@ const AdminDashboard = () => {
         Add Game
       </button>
       <button className="px-4 py-2 w-[15%] bg-blue-600 rounded-lg text-white hover:brightness-90">
-        <Link to={"/"}>Back To Main Dashboard</Link>
+        <Link to={"/admin"}>Back To Admin Panel</Link>
       </button>
     </form>
   );
 };
 
-export default AdminDashboard;
+export default NewGame;
