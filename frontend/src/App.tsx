@@ -94,7 +94,14 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={<Main onLogout={handleLogOut} user={user} games={games} />}
+            element={
+              <Main
+                onLogout={handleLogOut}
+                user={user}
+                games={games}
+                users={users}
+              />
+            }
           />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/scores/:id" element={<ScoresForm />} />

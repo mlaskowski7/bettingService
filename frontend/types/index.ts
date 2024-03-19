@@ -6,6 +6,9 @@ export interface RegistrationFormProps {
   onRegister: (username: string, password: string) => void;
 }
 
+export interface LeaderboardProps {
+  users: User[] | null;
+}
 export interface HeroProps {
   user: string;
   games: Game[] | null;
@@ -14,6 +17,7 @@ export interface HeroProps {
 export interface MainProps {
   onLogout: () => void;
   user: string;
+  users: User[] | null;
   games: Game[] | null;
 }
 

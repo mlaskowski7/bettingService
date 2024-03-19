@@ -8,7 +8,10 @@ const Hero = ({ user, games }: HeroProps) => {
   };
 
   return (
-    <div className="h-screen relative flex flex-col justify-center items-center gap-20">
+    <div
+      id="hero"
+      className="h-screen relative flex flex-col justify-center items-center gap-20"
+    >
       <div className="flex justify-between mx-40 items-center gap-20">
         <div className="flex flex-col justify-center items-center">
           <h1 className="dela-font text-[40px] text-center">
@@ -32,10 +35,7 @@ const Hero = ({ user, games }: HeroProps) => {
           {games?.map((game, index) => {
             if (!game.goals_home && !game.goals_away) {
               return (
-                <p
-                  key={index}
-                  className="text-[16px] text-center items-start hover:text-[22px] transition-all ease-in-out duration-300"
-                >
+                <p key={index} className="text-[16px] text-center items-start">
                   {game.home_team} vs. {game.away_team} on{" "}
                   {formatDate(game.date)}
                 </p>
@@ -45,7 +45,9 @@ const Hero = ({ user, games }: HeroProps) => {
         </div>
       </div>
       <div className="rounded-full bg-black text-white p-7 hover:bg-red-600 transition-all duration-300 ease-in-out cursor-pointer">
-        <ScrollLink to="leaderboard">Leaderboard</ScrollLink>
+        <ScrollLink to="leaderboard" spy={true} smooth={true} duration={500}>
+          Leaderboard
+        </ScrollLink>
       </div>
     </div>
   );
