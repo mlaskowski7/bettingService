@@ -3,7 +3,7 @@ import { LogoutFormProps } from "../../types";
 
 const Navbar = ({ onLogout, user }: LogoutFormProps) => {
   return (
-    <div className="z-0 h-12 bg-red-600 flex justify-end items-center">
+    <div className="z-0 h-[10vh] bg-red-600 flex justify-end items-center">
       <div className="flex mr-5 items-center gap-2">
         <div className="text-white text-[15px] font-semibold mr-10 cursor-default">
           {user.toUpperCase()}

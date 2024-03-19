@@ -2,27 +2,51 @@ import React, { useState, useEffect } from "react";
 import {
   LoginForm,
   RegistrationForm,
-  MainDashboard,
   AdminDashboard,
   ScoresForm,
   Leaderboard,
   BetForm,
+  Main,
 } from "./components";
-import { User } from "../types";
 import axios from "axios";
 import "./app.css";
 import { useNavigate, Route, Routes } from "react-router-dom";
+import { User, Game } from "../types";
 
 const App = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<string>("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [games, setGames] = useState<Game[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(localStorage.getItem("user"));
     const loggedUser = localStorage.getItem("user");
     if (loggedUser) {
-      setUser({ username: loggedUser });
+      setUser(loggedUser);
     }
+
+    const getUsers = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/users");
+        setUsers(response.data);
+      } catch (error) {
+        alert("Failed to fetch users - something is wrong");
+        console.error(error);
+      }
+    };
+
+    const getGames = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/games");
+        setGames(response.data);
+      } catch (error) {
+        alert("Failed to fetch games - something is wrong");
+        console.error(error);
+      }
+    };
+
+    getUsers();
+    getGames();
   }, []);
 
   const handleLogin = async (username: string, password: string) => {
@@ -32,7 +56,7 @@ const App = () => {
         password,
       });
       localStorage.setItem("user", username);
-      setUser({ username });
+      setUser(username);
       console.log(localStorage.getItem("user"));
       navigate("/");
     } catch (error) {
@@ -49,7 +73,7 @@ const App = () => {
         password,
       });
       localStorage.setItem("user", username);
-      setUser({ username });
+      setUser(username);
       navigate("/");
     } catch (error) {
       alert(
@@ -60,7 +84,7 @@ const App = () => {
 
   const handleLogOut = () => {
     localStorage.removeItem("user");
-    setUser(null);
+    setUser("");
     location.reload();
   };
 
@@ -68,7 +92,10 @@ const App = () => {
     <div>
       {user ? (
         <Routes>
-          <Route path="/" element={<MainDashboard onLogout={handleLogOut} />} />
+          <Route
+            path="/"
+            element={<Main onLogout={handleLogOut} user={user} games={games} />}
+          />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/scores/:id" element={<ScoresForm />} />
           <Route path="/leaderboard" element={<Leaderboard />} />

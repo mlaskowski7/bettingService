@@ -5,21 +5,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Navbar } from ".";
 
-type User = {
-  username: string;
-  password: string;
-  points: number;
-  id: number;
-};
 
-type Game = {
-  id: number;
-  home_team: string;
-  away_team: string;
-  goals_home: number | null;
-  goals_away: number | null;
-  date: string;
-};
+
 
 const MainDashboard = ({ onLogout }: MainDashboardProps) => {
   const [user, setUser] = useState<string>("");

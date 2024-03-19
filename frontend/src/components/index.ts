@@ -6,6 +6,7 @@ import ScoresForm from "./ScoresForm";
 import Leaderboard from "./Leaderboard";
 import BetForm from "./BetForm";
 import Navbar from "./Navbar";
+import Main from "./Main";
 
 export {
   LoginForm,
@@ -16,4 +17,5 @@ export {
   Leaderboard,
   BetForm,
   Navbar,
+  Main,
 };
