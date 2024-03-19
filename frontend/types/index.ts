@@ -21,6 +21,10 @@ export interface MainProps {
   games: Game[] | null;
 }
 
+export interface BetSectionProps {
+  games: Game[] | null;
+}
+
 export interface LogoutFormProps {
   onLogout: () => void;
   user: string;

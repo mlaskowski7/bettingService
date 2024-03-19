@@ -15,16 +15,19 @@ const Hero = ({ user, games }: HeroProps) => {
       <div className="flex justify-between mx-40 items-center gap-20">
         <div className="flex flex-col justify-center items-center">
           <h1 className="dela-font text-[40px] text-center">
-            Welcome back <span className="text-red-600 dela-font">{user}!</span>
+            Welcome back{" "}
+            <span className="text-red-600 dela-font">
+              {user.toUpperCase()}!
+            </span>
           </h1>
           <img
             src="/football.png"
             alt="football png"
-            className="w-[200px] h-[200px] hover:opacity-70 transition-all ease-in-out duration-300"
+            className="w-[150px] h-[150px] hover:opacity-70 transition-all ease-in-out duration-300"
           />
         </div>
         <div>
-          <h1 className="font-bold text-[30px] text-center flex items-center gap-4 mb-5">
+          <h1 className="font-bold text-[30px] text-left flex items-center justify-start gap-4 mb-5">
             <img
               src="/game.png"
               alt="games png"
@@ -35,7 +38,7 @@ const Hero = ({ user, games }: HeroProps) => {
           {games?.map((game, index) => {
             if (!game.goals_home && !game.goals_away) {
               return (
-                <p key={index} className="text-[16px] text-center items-start">
+                <p key={index} className="text-[16px] text-left items-start">
                   {game.home_team} vs. {game.away_team} on{" "}
                   {formatDate(game.date)}
                 </p>
@@ -44,11 +47,15 @@ const Hero = ({ user, games }: HeroProps) => {
           })}
         </div>
       </div>
-      <div className="rounded-full bg-black text-white p-7 hover:bg-red-600 transition-all duration-300 ease-in-out cursor-pointer">
-        <ScrollLink to="leaderboard" spy={true} smooth={true} duration={500}>
-          Leaderboard
-        </ScrollLink>
-      </div>
+      <ScrollLink
+        to="leaderboard"
+        spy={true}
+        smooth={true}
+        duration={500}
+        className="rounded-full  bg-black text-white p-7 hover:bg-red-600 transition-all duration-300 ease-in-out cursor-pointer"
+      >
+        <img src="/downArrow.png" alt="arrow" className="w-[50px] h-[50px]" />
+      </ScrollLink>
     </div>
   );
 };
