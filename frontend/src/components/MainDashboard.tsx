@@ -7,6 +7,22 @@ import { Link } from "react-router-dom";
 const MainDashboard = () => {
   const [games, setGames] = useState<Game[]>([]);
 
+  const deleteGame = async (gameId: number) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/game/${gameId}`
+      );
+
+      if (response.status === 200) {
+        alert("Game deleted successfully");
+        setGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
+      }
+    } catch (error) {
+      alert("Something went wrong");
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const getGames = async () => {
       try {
@@ -37,14 +53,22 @@ const MainDashboard = () => {
         {games.map((game, index) => {
           if (!game.goals_home && !game.goals_away) {
             return (
-              <Link
-                to={`/scores/${game.id}`}
-                key={index}
-                className="text-[19px] text-left items-start hover:text-blue-500 transition-all ease-in-out duration-300"
-              >
-                {game.home_team} vs. {game.away_team} on {formatDate(game.date)}
-                ({game.time})
-              </Link>
+              <div className="flex gap-4">
+                <Link
+                  to={`/scores/${game.id}`}
+                  key={index}
+                  className="text-[19px] text-left items-start hover:text-blue-500 transition-all ease-in-out duration-300"
+                >
+                  {game.home_team} vs. {game.away_team} on{" "}
+                  {formatDate(game.date)}({game.time})
+                </Link>
+                <button
+                  className="bg-black text-white px-2 py-1 rounded-lg text-[12px] hover:brightness-75 transition-all ease-in-out duration-300"
+                  onClick={() => deleteGame(game.id)}
+                >
+                  DELETE
+                </button>
+              </div>
             );
           }
         })}
