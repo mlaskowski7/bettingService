@@ -63,13 +63,21 @@ const BetForm = () => {
     }
   };
 
+  const formatDate = (dateString: string | undefined) => {
+    if (dateString != undefined) {
+      const date = new Date(dateString);
+      return date.toISOString().split("T")[0];
+    }
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
       className="w-screen h-screen bg-[#F5F5F5] flex justify-center items-center flex-col gap-6 text-black"
     >
       <h2 className="mb-5 text-[20px]">
-        Place your bet on game - {game?.home_team} vs. {game?.away_team}
+        Place your bet on game - {game?.home_team} vs. {game?.away_team} on{" "}
+        {formatDate(game?.date)}
       </h2>
       <div className="">
         <label className="font-bold">{game?.home_team} : </label>

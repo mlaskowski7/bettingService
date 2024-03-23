@@ -28,12 +28,14 @@ export interface BetSectionProps {
 export interface LogoutFormProps {
   onLogout: () => void;
   user: string;
+  users: User[] | null;
 }
 
 export interface User {
   username: string;
   password: string;
   points: number;
+  isadmin: boolean;
   id: number;
 }
 
@@ -44,4 +46,5 @@ export interface Game {
   goals_home: number | null;
   goals_away: number | null;
   date: string;
+  time: string;
 }

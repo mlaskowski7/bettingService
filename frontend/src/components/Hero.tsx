@@ -40,7 +40,7 @@ const Hero = ({ user, games }: HeroProps) => {
               return (
                 <p key={index} className="text-[16px] text-left items-start">
                   {game.home_team} vs. {game.away_team} on{" "}
-                  {formatDate(game.date)}
+                  {formatDate(game.date)} ({game.time})
                 </p>
               );
             }

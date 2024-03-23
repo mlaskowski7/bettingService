@@ -19,7 +19,7 @@ const LeaderboardSection = ({ users }: LeaderboardProps) => {
           {users?.map((user, index) => {
             if (index <= 2) {
               return (
-                <div className="p-5">
+                <div className="p-5" key={index}>
                   <span className="bg-blue-400 p-2 rounded-full text-white mx-2">
                     {index + 1}.
                   </span>

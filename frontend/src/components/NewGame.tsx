@@ -1,21 +1,23 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NewGame = () => {
   const [home, setHome] = useState<string>("");
   const [away, setAway] = useState<string>("");
   const [date, setDate] = useState<string>("");
-  const navigate = useNavigate();
+  const [time, setTime] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      await axios.post("http://localhost:3000/api/games", {
+      const response = await axios.post("http://localhost:3000/api/games", {
         home_team: home,
         away_team: away,
         date: date,
+        time: time,
       });
-      navigate("/");
+      if (response) alert("The game has been successfully added");
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
@@ -54,6 +56,15 @@ const NewGame = () => {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+        />
+      </div>
+      <div>
+        <label className="font-bold">Time:</label>
+        <input
+          className="ml-5 bg-transparent border-2 border-white rounded-lg"
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
         />
       </div>
       <button

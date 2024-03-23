@@ -56,10 +56,11 @@ app.post("/api/games", async (request, response) => {
       home_team: request.body.home_team,
       away_team: request.body.away_team,
       date: request.body.date,
+      time: request.body.time,
     };
     await pool.query(
-      "INSERT INTO game (home_team, away_team, date) VALUES ($1, $2, $3)",
-      [game.home_team, game.away_team, game.date]
+      "INSERT INTO game (home_team, away_team, date, time) VALUES ($1, $2, $3, $4)",
+      [game.home_team, game.away_team, game.date, game.time]
     );
     response.status(201).send();
   } catch (error) {
