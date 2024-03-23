@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { BetSectionProps } from "../../types";
+import { RefreshButton } from ".";
 
 const BetSection = ({ games }: BetSectionProps) => {
   return (
@@ -29,15 +30,18 @@ const BetSection = ({ games }: BetSectionProps) => {
         })}
       </div>
 
-      <ScrollLink
-        to="hero"
-        spy={true}
-        smooth={true}
-        duration={500}
-        className="rounded-full  bg-black text-white p-7 border-2 border-black hover:bg-transparent transition-all duration-300 ease-in-out cursor-pointer"
-      >
-        <img src="/up-arrow.png" alt="arrow" className="w-[50px] h-[50px]" />
-      </ScrollLink>
+      <div className="flex items-center justify-center gap-4">
+        <ScrollLink
+          to="hero"
+          spy={true}
+          smooth={true}
+          duration={500}
+          className="rounded-full  bg-black text-white p-5 border-2 border-black hover:bg-transparent transition-all duration-300 ease-in-out cursor-pointer"
+        >
+          <img src="/up-arrow.png" alt="arrow" className="w-[50px] h-[50px]" />
+        </ScrollLink>
+        <RefreshButton />
+      </div>
     </div>
   );
 };

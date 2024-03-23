@@ -8,8 +8,7 @@ const NewGame = () => {
   const [date, setDate] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
       await axios.post("http://localhost:3000/api/games", {
         home_team: home,

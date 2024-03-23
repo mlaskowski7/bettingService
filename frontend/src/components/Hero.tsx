@@ -47,6 +47,7 @@ const Hero = ({ user, games }: HeroProps) => {
           })}
         </div>
       </div>
+
       <ScrollLink
         to="leaderboard"
         spy={true}

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const cors = require("cors");
 const { Pool } = require("pg");
 
-require("dotenv").config();
+require("dotenv").config({ path: "./.env.local" });
 
 app.use(
   cors({
@@ -14,7 +14,7 @@ app.use(
 );
 
 const pool = new Pool({
-  user: process.env.USER,
+  user: process.env.DB_USER,
   host: process.env.HOST,
   database: process.env.DATABASE,
   password: process.env.PASSWORD,

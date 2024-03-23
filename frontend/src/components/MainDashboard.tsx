@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Game, MainDashboardProps, User } from "../../types";
+import { Game } from "../../types";
 import "../app.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Navbar } from ".";
 
-const MainDashboard = ({ onLogout }: MainDashboardProps) => {
-  const [user, setUser] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
+const MainDashboard = () => {
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await axios.get("http://localhost:3000/api/users");
-        setUsers(response.data);
-      } catch (error) {
-        alert("Failed to fetch users - something is wrong");
-        console.error(error);
-      }
-    };
-
     const getGames = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/games");
@@ -31,11 +18,7 @@ const MainDashboard = ({ onLogout }: MainDashboardProps) => {
       }
     };
 
-    getUsers();
     getGames();
-
-    const loggedUser = localStorage.getItem("user") || "";
-    setUser(loggedUser);
   }, []);
 
   const formatDate = (dateString: string) => {

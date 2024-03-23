@@ -2,6 +2,7 @@ import React from "react";
 import { LeaderboardProps } from "../../types";
 import { Link as ScrollLink } from "react-scroll";
 import { Link } from "react-router-dom";
+import { RefreshButton } from ".";
 
 const LeaderboardSection = ({ users }: LeaderboardProps) => {
   return (
@@ -54,15 +55,19 @@ const LeaderboardSection = ({ users }: LeaderboardProps) => {
       >
         Click To See Detailed Table
       </Link>
-      <ScrollLink
-        to="betSection"
-        spy={true}
-        smooth={true}
-        duration={500}
-        className="rounded-full  bg-black text-white p-7 hover:bg-red-600 transition-all duration-300 ease-in-out cursor-pointer"
-      >
-        <img src="/downArrow.png" alt="arrow" className="w-[50px] h-[50px]" />
-      </ScrollLink>
+
+      <div className="flex justify-center items-center gap-4">
+        <ScrollLink
+          to="betSection"
+          spy={true}
+          smooth={true}
+          duration={500}
+          className="rounded-full  bg-black text-white p-5 hover:bg-red-600 transition-all duration-300 ease-in-out cursor-pointer"
+        >
+          <img src="/downArrow.png" alt="arrow" className="w-[50px] h-[50px]" />
+        </ScrollLink>
+        <RefreshButton />
+      </div>
     </div>
   );
 };

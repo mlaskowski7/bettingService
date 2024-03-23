@@ -5,7 +5,7 @@ import { Link as ScrollLink } from "react-scroll";
 const Navbar = ({ onLogout, user }: LogoutFormProps) => {
   return (
     <div className="fixed top-0 left-0 w-full z-50 h-[10vh] bg-red-600 flex justify-between items-center opacity-100">
-      <h1 className="text-[34px] dela-font text-blue-400 bg-white ml-5 px-5 py-3 rounded-md cursor-default">
+      <h1 className="text-[34px] dela-font text-blue-400 bg-white ml-5 px-5 py-3 rounded-md">
         Betting <span className="text-red-600 dela-font">Service</span>
       </h1>
       <div className="flex justify-center items-center text-center gap-4 text-white font-bold">

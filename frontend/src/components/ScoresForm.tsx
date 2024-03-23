@@ -88,7 +88,6 @@ const ScoresForm = () => {
               username: loggedUser,
               multiplier: multiplier,
             });
-            await axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
           } else if (
             goals_home - goals_away > 0 ==
             bet.goals_home - bet.goals_away > 0
@@ -98,7 +97,6 @@ const ScoresForm = () => {
               username: loggedUser,
               multiplier: multiplier,
             });
-            await axios.delete(`http://localhost:3000/api/bet/${bet.id}`);
           }
         } catch (error) {
           alert("Error while updating or deleting bet");

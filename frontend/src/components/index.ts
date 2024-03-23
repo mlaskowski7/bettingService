@@ -7,6 +7,7 @@ import BetForm from "./BetForm";
 import Navbar from "./Navbar";
 import Main from "./Main";
 import LeaderboardSection from "./LeaderboardSection";
+import RefreshButton from "./RefreshButton";
 
 export {
   LoginForm,
@@ -18,4 +19,5 @@ export {
   Navbar,
   LeaderboardSection,
   Main,
+  RefreshButton,
 };
