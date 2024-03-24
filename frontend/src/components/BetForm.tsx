@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { User } from "../../types";
 
 // YOU HAVE TO ADD GAME ID FROM PARAMS THAT IS THE ONE THAT SHOULD BE UPDATED
 
@@ -13,7 +14,11 @@ type Game = {
   date: string;
 };
 
-const BetForm = () => {
+interface BetFormProps {
+  users: User[];
+}
+
+const BetForm: React.FC<BetFormProps> = ({ users }) => {
   const [goals_home, setGoals_home] = useState<number>(0);
   const [goals_away, setGoals_away] = useState<number>(0);
   const [user_id, setUser_id] = useState<number | null>(null);
@@ -43,9 +48,12 @@ const BetForm = () => {
     };
 
     getGame();
-    const loggedUser = localStorage.getItem("user") || "";
-    setUser_id(Number(loggedUser));
-  }, [id]);
+    const loggedUser = users.find(
+      (user) => user.username === localStorage.getItem("user")
+    );
+
+    if (loggedUser) setUser_id(loggedUser.id);
+  }, [users, id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

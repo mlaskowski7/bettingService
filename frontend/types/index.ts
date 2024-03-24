@@ -48,3 +48,11 @@ export interface Game {
   date: string;
   time: string;
 }
+
+export interface Bet {
+  id: number;
+  user_id: number;
+  game_id: number;
+  goals_home: number;
+  goals_away: number;
+}

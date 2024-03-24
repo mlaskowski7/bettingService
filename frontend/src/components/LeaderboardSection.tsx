@@ -50,7 +50,7 @@ const LeaderboardSection = ({ users }: LeaderboardProps) => {
         </div>
       </div>
       <Link
-        to={"/"}
+        to={"/detailedView"}
         className="bg-red-600 px-6 py-4 rounded-md border-2 border-red-600 text-white hover:text-red-600 hover:bg-transparent transition-all ease-in-out duration-300"
       >
         Click To See Detailed Table

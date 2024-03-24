@@ -7,16 +7,18 @@ import {
   NewGame,
   MainDashboard,
   BetForm,
+  DetailedView,
 } from "./components";
 import axios from "axios";
 import "./app.css";
 import { useNavigate, Route, Routes } from "react-router-dom";
-import { User, Game } from "../types";
+import { User, Game, Bet } from "../types";
 
 const App = () => {
   const [user, setUser] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [games, setGames] = useState<Game[]>([]);
+  const [bets, setBets] = useState<Bet[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +47,18 @@ const App = () => {
       }
     };
 
+    const getBets = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/bets");
+        setBets(response.data);
+      } catch (error) {
+        alert("Failed to fetch games - something is wrong");
+        console.error(error);
+      }
+    };
+
     getUsers();
+    getBets();
     getGames();
   }, []);
 
@@ -103,10 +116,14 @@ const App = () => {
               />
             }
           />
+          <Route
+            path="/detailedView"
+            element={<DetailedView bets={bets} games={games} users={users} />}
+          />
           <Route path="/admin" element={<MainDashboard />} />
           <Route path="/admin/newGame" element={<NewGame />} />
           <Route path="/scores/:id" element={<ScoresForm />} />
-          <Route path="/bets/:id" element={<BetForm />} />
+          <Route path="/bets/:id" element={<BetForm users={users} />} />
         </Routes>
       ) : (
         <Routes>

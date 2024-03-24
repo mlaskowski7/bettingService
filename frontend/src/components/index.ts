@@ -8,6 +8,7 @@ import Navbar from "./Navbar";
 import Main from "./Main";
 import LeaderboardSection from "./LeaderboardSection";
 import RefreshButton from "./RefreshButton";
+import DetailedView from "./DetailedView";
 
 export {
   LoginForm,
@@ -20,4 +21,5 @@ export {
   LeaderboardSection,
   Main,
   RefreshButton,
+  DetailedView,
 };
