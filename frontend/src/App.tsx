@@ -123,7 +123,10 @@ const App = () => {
           <Route path="/admin" element={<MainDashboard />} />
           <Route path="/admin/newGame" element={<NewGame />} />
           <Route path="/scores/:id" element={<ScoresForm />} />
-          <Route path="/bets/:id" element={<BetForm users={users} />} />
+          <Route
+            path="/bets/:id"
+            element={<BetForm users={users} bets={bets} />}
+          />
         </Routes>
       ) : (
         <Routes>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { User } from "../../types";
+import { Bet, User } from "../../types";
 
 // YOU HAVE TO ADD GAME ID FROM PARAMS THAT IS THE ONE THAT SHOULD BE UPDATED
 
@@ -16,9 +16,10 @@ type Game = {
 
 interface BetFormProps {
   users: User[];
+  bets: Bet[];
 }
 
-const BetForm: React.FC<BetFormProps> = ({ users }) => {
+const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
   const [goals_home, setGoals_home] = useState<number>(0);
   const [goals_away, setGoals_away] = useState<number>(0);
   const [user_id, setUser_id] = useState<number | null>(null);
@@ -26,7 +27,7 @@ const BetForm: React.FC<BetFormProps> = ({ users }) => {
   const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
-  const game_id = id;
+  const game_id = Number(id);
 
   useEffect(() => {
     const getGame = async () => {
@@ -57,7 +58,13 @@ const BetForm: React.FC<BetFormProps> = ({ users }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
+      if (
+        bets.find((bet) => bet.user_id === user_id && bet.game_id === game_id)
+      ) {
+        await axios.delete(`http://localhost:3000/api/bet/${game_id}`);
+      }
       await axios.post(`http://localhost:3000/api/bets`, {
         user_id: user_id,
         game_id: game_id,
