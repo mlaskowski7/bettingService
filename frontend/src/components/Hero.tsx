@@ -49,7 +49,7 @@ const Hero = ({ user, games }: HeroProps) => {
       </div>
 
       <ScrollLink
-        to="leaderboard"
+        to="yourBetsSection"
         spy={true}
         smooth={true}
         duration={500}

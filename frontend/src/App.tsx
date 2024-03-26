@@ -113,6 +113,7 @@ const App = () => {
                 user={user}
                 games={games}
                 users={users}
+                bets={bets}
               />
             }
           />

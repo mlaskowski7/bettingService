@@ -19,6 +19,7 @@ export interface MainProps {
   user: string;
   users: User[] | null;
   games: Game[] | null;
+  bets: Bet[] | null;
 }
 
 export interface BetSectionProps {

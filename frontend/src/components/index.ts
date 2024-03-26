@@ -9,6 +9,7 @@ import Main from "./Main";
 import LeaderboardSection from "./LeaderboardSection";
 import RefreshButton from "./RefreshButton";
 import DetailedView from "./DetailedView";
+import YourBets from "./YourBets";
 
 export {
   LoginForm,
@@ -22,4 +23,5 @@ export {
   Main,
   RefreshButton,
   DetailedView,
+  YourBets,
 };
