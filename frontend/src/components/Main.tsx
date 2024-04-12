@@ -8,7 +8,7 @@ const Main = ({ onLogout, user, games, users, bets }: MainProps) => {
   return (
     <div>
       <Navbar onLogout={onLogout} user={user} users={users} />
-      <Hero user={user} games={games} />
+      <Hero user={user} games={games} bets={bets} />
       <YourBets users={users} bets={bets} games={games} />
       <LeaderboardSection users={users} />
       <BetSection games={games} />

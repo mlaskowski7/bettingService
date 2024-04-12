@@ -12,11 +12,13 @@ export interface LeaderboardProps {
 export interface HeroProps {
   user: string;
   games: Game[] | null;
+  bets: Bet[] | null;
+  users: User[] | null;
 }
 
 export interface MainProps {
   onLogout: () => void;
-  user: string;
+  username: string;
   users: User[] | null;
   games: Game[] | null;
   bets: Bet[] | null;
