@@ -121,9 +121,15 @@ const App = () => {
             path="/detailedView"
             element={<DetailedView bets={bets} games={games} users={users} />}
           />
-          <Route path="/admin" element={<MainDashboard />} />
-          <Route path="/admin/newGame" element={<NewGame />} />
-          <Route path="/scores/:id" element={<ScoresForm />} />
+          {users.find((elem) => elem.username === user)?.isadmin && (
+            <Route path="/admin" element={<MainDashboard />} />
+          )}
+          {users.find((elem) => elem.username === user)?.isadmin && (
+            <Route path="/admin/newGame" element={<NewGame />} />
+          )}
+          {users.find((elem) => elem.username === user)?.isadmin && (
+            <Route path="/scores/:id" element={<ScoresForm />} />
+          )}
           <Route
             path="/bets/:id"
             element={<BetForm users={users} bets={bets} />}

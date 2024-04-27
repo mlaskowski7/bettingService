@@ -58,12 +58,12 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    const currentBet = bets.find(
+      (bet) => bet.user_id === user_id && bet.game_id === game_id
+    );
     try {
-      if (
-        bets.find((bet) => bet.user_id === user_id && bet.game_id === game_id)
-      ) {
-        await axios.delete(`http://localhost:3000/api/bet/${game_id}`);
+      if (currentBet) {
+        await axios.delete(`http://localhost:3000/api/bet/${currentBet?.id}`);
       }
       await axios.post(`http://localhost:3000/api/bets`, {
         user_id: user_id,
