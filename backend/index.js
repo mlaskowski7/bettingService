@@ -57,10 +57,11 @@ app.post("/api/games", async (request, response) => {
       away_team: request.body.away_team,
       date: request.body.date,
       time: request.body.time,
+      multiplier: request.body.multiplier,
     };
     await pool.query(
-      "INSERT INTO game (home_team, away_team, date, time) VALUES ($1, $2, $3, $4)",
-      [game.home_team, game.away_team, game.date, game.time]
+      "INSERT INTO game (home_team, away_team, multiplier, date, time) VALUES ($1, $2, $3, $4, $5)",
+      [game.home_team, game.away_team, game.multiplier, game.date, game.time]
     );
     response.status(201).send();
   } catch (error) {
@@ -144,29 +145,20 @@ app.post("/api/users", async (request, response) => {
 });
 
 app.put("/api/pointsWin", async (request, response) => {
-  const username = request.body.username;
+  const userId = request.body.userId;
   const pointsMultiplied = request.body.multiplier * 1;
+  const gameId = request.body.gameId;
   try {
-    // Query the database for the user
-    const userResult = await pool.query(
-      'SELECT * FROM "user" WHERE username = $1',
-      [username]
-    );
-    if (userResult.rows.length === 0) {
-      return response.status(404).send("User not found");
-    }
-    const user = userResult.rows[0];
-
-    // Check if user has an id
-    if (!user.id) {
-      return response.status(404).send("User ID not found");
-    }
-
     // Update the user's points
     await pool.query('UPDATE "user" SET points = points + $2 WHERE id = $1', [
-      user.id,
+      userId,
       pointsMultiplied,
     ]);
+
+    await pool.query(
+      "UPDATE bet SET points_gained = $3 WHERE user_id = $1 AND game_id = $2",
+      [userId, gameId, pointsMultiplied]
+    );
     response.status(200).send("Points updated successfully.");
   } catch (error) {
     console.error(error);
@@ -175,29 +167,20 @@ app.put("/api/pointsWin", async (request, response) => {
 });
 
 app.put("/api/pointsScore", async (request, response) => {
-  const username = request.body.username;
-  const pointsMultiplied = request.body.multiplier * 2;
+  const { userId, gameId, multiplier } = request.body;
+  const pointsMultiplied = multiplier * 2;
+  console.log(userId);
+  console.log(pointsMultiplied);
   try {
-    // Query the database for the user
-    const userResult = await pool.query(
-      'SELECT * FROM "user" WHERE username = $1',
-      [username]
-    );
-    if (userResult.rows.length === 0) {
-      return response.status(404).send("User not found");
-    }
-    const user = userResult.rows[0];
-
-    // Check if user has an id
-    if (!user.id) {
-      return response.status(404).send("User ID not found");
-    }
-
     // Update the user's points
-    await pool.query('UPDATE "user" SET points = points + $2 WHERE id = $1', [
-      user.id,
+    await pool.query('UPDATE "user" SET points = points + $1 WHERE id = $2', [
       pointsMultiplied,
+      userId,
     ]);
+    await pool.query(
+      "UPDATE bet SET points_gained = $1 WHERE user_id = $2 AND game_id = $3",
+      [pointsMultiplied, userId, gameId]
+    );
     response.status(200).send("Points updated successfully.");
   } catch (error) {
     console.error(error);
@@ -206,9 +189,9 @@ app.put("/api/pointsScore", async (request, response) => {
 });
 
 app.delete("/api/bet/:id", async (request, response) => {
-  const bet_id = parseInt(request.params.id, 10); // Ensure the parameter is treated as a number
+  const bet_id = parseInt(request.params.id, 10);
   try {
-    await pool.query("DELETE FROM bet WHERE id=$1", [bet_id]); // Assuming the primary key column is named `id`
+    await pool.query("DELETE FROM bet WHERE id=$1", [bet_id]);
     response.status(200).send(`Bet with ID ${bet_id} was deleted.`);
   } catch (error) {
     console.error(error);
@@ -217,22 +200,10 @@ app.delete("/api/bet/:id", async (request, response) => {
 });
 
 app.delete("/api/game/:id", async (request, response) => {
-  const game_id = parseInt(request.params.id, 10); // Ensure the parameter is treated as a number
+  const game_id = parseInt(request.params.id, 10);
   try {
-    await pool.query("DELETE FROM game WHERE id=$1", [game_id]); // Assuming the primary key column is named `id`
+    await pool.query("DELETE FROM game WHERE id=$1", [game_id]);
     response.status(200).send(`game with ID ${game_id} was deleted.`);
-  } catch (error) {
-    console.error(error);
-    response.status(500).send();
-  }
-});
-
-app.put("/api/pointsScore", async (request, response) => {
-  const user = users.find((user) => user.username == request.body.username);
-  try {
-    await pool.query('UPDATE "user" SET points=points+2 WHERE id=$1', [
-      user.id,
-    ]);
   } catch (error) {
     console.error(error);
     response.status(500).send();

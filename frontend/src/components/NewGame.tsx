@@ -7,6 +7,7 @@ const NewGame = () => {
   const [away, setAway] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [time, setTime] = useState<string>("");
+  const [multiplier, setMultiplier] = useState<number>(1);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -16,6 +17,7 @@ const NewGame = () => {
         away_team: away,
         date: date,
         time: time,
+        multiplier: multiplier,
       });
       if (response) alert("The game has been successfully added");
     } catch (error) {
@@ -47,6 +49,15 @@ const NewGame = () => {
           type="text"
           value={away}
           onChange={(e) => setAway(e.target.value)}
+        />
+      </div>
+      <div>
+        <label className="font-bold">Points Multiplier:</label>
+        <input
+          className="ml-5 bg-transparent border-2 border-white rounded-lg"
+          type="number"
+          value={multiplier}
+          onChange={(e) => setMultiplier(Number(e.target.value))}
         />
       </div>
       <div>

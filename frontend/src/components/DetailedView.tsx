@@ -18,41 +18,55 @@ const DetailedView: React.FC<DetailedViewProps> = ({ bets, games, users }) => {
         <table className="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-800 text-white">
             <tr>
-              <th className="px-4 py-2">User / Game</th>
-              {games.map((game) => (
+              <th className="px-4 py-2">User</th>
+              <th className="px-4 py-2 font-bold text-red-600">POINTS</th>
+              {[...games].reverse().map((game) => (
                 <th key={game.id} className="px-4 py-2">
                   {game.home_team} vs {game.away_team}
                 </th>
               ))}
-              <th className="px-4 py-2 font-bold text-red-600">POINTS</th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
+            <tr className="text-blue-600 font-bold border-b">
+              <td></td>
+              <td className="text-center">Points Multiplier</td>
+              {games.map((game) => (
+                <td className="text-center ">
+                  X {game.multiplier ? game.multiplier : "1"}
+                </td>
+              ))}
+            </tr>
             {users.map((user) => (
               <tr key={user.id} className="border-b">
                 <td className="px-4 py-2 font-medium text-center">
                   {user.username}
                 </td>
-                {games.map((game) => {
+                <td className="font-bold text-red-600 text-center">
+                  {user.points}
+                </td>
+
+                {[...games].reverse().map((game) => {
                   const userBet = bets.find(
                     (bet) => bet.user_id === user.id && bet.game_id === game.id
                   );
                   return (
                     <td key={game.id} className="px-4 py-2 text-center">
                       {userBet
-                        ? `${userBet.goals_home}-${userBet.goals_away}`
+                        ? `${userBet.goals_home}-${userBet.goals_away}(${
+                            userBet.points_gained ? userBet.points_gained : 0
+                          }p.)`
                         : "No Bet"}
                     </td>
                   );
                 })}
-                <td className="font-bold text-red-600 text-center">
-                  {user.points}
-                </td>
               </tr>
             ))}
             <tr className="text-blue-600 font-bold">
+              <td></td>
               <td className="text-center">SCORE</td>
-              {games.map((game) => (
+
+              {[...games].reverse().map((game) => (
                 <td className="text-center">
                   {game.goals_home}-{game.goals_away}
                 </td>

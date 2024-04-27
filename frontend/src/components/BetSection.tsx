@@ -56,7 +56,7 @@ const BetSection = ({ games }: BetSectionProps) => {
           spy={true}
           smooth={true}
           duration={500}
-          className="rounded-full  bg-black text-white p-5 border-4 border-black hover:bg-transparent transition-all duration-300 ease-in-out cursor-pointer"
+          className="rounded-full  bg-black text-white p-4 border-4 border-black hover:bg-transparent transition-all duration-300 ease-in-out cursor-pointer scale-75"
         >
           <img src="/up-arrow.png" alt="arrow" className="w-[50px] h-[50px]" />
         </ScrollLink>

@@ -6,7 +6,7 @@ const Navbar = ({ onLogout, user, users }: LogoutFormProps) => {
   const loggedUser = users?.find((element) => element.username === user);
   return (
     <div className="fixed top-0 left-0 w-full z-50 h-[10vh] bg-red-600 flex justify-between items-center opacity-100">
-      <h1 className="text-[34px] dela-font text-blue-400 bg-white ml-5 px-5 py-3 rounded-md">
+      <h1 className="text-[34px] dela-font text-blue-400 bg-white ml-5 px-5 py-3 rounded-md max-lg:hidden">
         Betting <span className="text-red-600 dela-font">Service</span>
       </h1>
       <div
@@ -17,7 +17,7 @@ const Navbar = ({ onLogout, user, users }: LogoutFormProps) => {
         {loggedUser?.isadmin && (
           <Link
             to={"/admin"}
-            className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer"
+            className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer max-lg:ml-10"
           >
             ADMIN PANEL
           </Link>
@@ -28,7 +28,7 @@ const Navbar = ({ onLogout, user, users }: LogoutFormProps) => {
           spy={true}
           smooth={true}
           duration={500}
-          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer"
+          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer max-sm:hidden"
         >
           YOUR BETS
         </ScrollLink>
@@ -38,7 +38,7 @@ const Navbar = ({ onLogout, user, users }: LogoutFormProps) => {
           spy={true}
           smooth={true}
           duration={500}
-          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer"
+          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer max-sm:hidden"
         >
           LEADERBOARD
         </ScrollLink>
@@ -47,7 +47,7 @@ const Navbar = ({ onLogout, user, users }: LogoutFormProps) => {
           spy={true}
           smooth={true}
           duration={500}
-          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer"
+          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer max-sm:hidden"
         >
           PLACE A BET
         </ScrollLink>

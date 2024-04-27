@@ -9,7 +9,7 @@ const RefreshButton = () => {
     <div>
       <button
         onClick={refreshPage}
-        className="rounded-full border-4 border-red-600 bg-red-600 text-white p-4 hover:bg-transparent transition-all duration-300 ease-in-out cursor-pointer"
+        className="rounded-full border-4 border-red-600 bg-red-600 text-white p-4 hover:bg-transparent transition-all duration-300 ease-in-out cursor-pointer scale-75"
         title="Refresh Data"
       >
         <img

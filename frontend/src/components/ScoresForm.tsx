@@ -1,33 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Bet, Game } from "../../types";
 
 // YOU HAVE TO ADD GAME ID FROM PARAMS THAT IS THE ONE THAT SHOULD BE UPDATED
-
-type Game = {
-  id: number;
-  home_team: string;
-  away_team: string;
-  goals_home: number | null;
-  goals_away: number | null;
-  counter: number | null;
-  date: string;
-};
-
-type Bet = {
-  id: number;
-  user_id: number;
-  game_id: number;
-  goals_home: number;
-  goals_away: number;
-};
 
 const ScoresForm = () => {
   const [goals_home, setGoals_home] = useState<number>(0);
   const [goals_away, setGoals_away] = useState<number>(0);
   const [game, setGame] = useState<Game | null>(null);
   const [bets, setBets] = useState<Bet[]>([]);
-  const [multiplier, setMultiplier] = useState<number>(1);
 
   const { id } = useParams<{ id: string }>();
 
@@ -85,17 +67,19 @@ const ScoresForm = () => {
         try {
           if (goals_home == bet.goals_home && goals_away == bet.goals_away) {
             await axios.put("http://localhost:3000/api/pointsScore", {
-              username: loggedUser,
-              multiplier: multiplier,
+              userId: bet.user_id,
+              gameId: game.id,
+              multiplier: game.multiplier,
             });
           } else if (
-            goals_home - goals_away > 0 ==
-            bet.goals_home - bet.goals_away > 0
+            goals_home - goals_away > 0 ===
+              bet.goals_home - bet.goals_away > 0 &&
+            goals_home - goals_away < 0 === bet.goals_home - bet.goals_away < 0
           ) {
-            console.log("winner");
             await axios.put("http://localhost:3000/api/pointsWin", {
-              username: loggedUser,
-              multiplier: multiplier,
+              userId: bet.user_id,
+              gameId: game.id,
+              multiplier: game.multiplier,
             });
           }
         } catch (error) {
@@ -132,15 +116,6 @@ const ScoresForm = () => {
           type="text"
           value={goals_away}
           onChange={(e) => setGoals_away(Number(e.target.value))}
-        />
-      </div>
-      <div>
-        <label className="font-bold">Points Multiplier: </label>
-        <input
-          className="ml-5 bg-transparent border-2 border-white rounded-lg"
-          type="text"
-          value={multiplier}
-          onChange={(e) => setMultiplier(Number(e.target.value))}
         />
       </div>
       <button

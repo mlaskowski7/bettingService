@@ -18,7 +18,7 @@ export interface HeroProps {
 
 export interface MainProps {
   onLogout: () => void;
-  username: string;
+  user: string;
   users: User[] | null;
   games: Game[] | null;
   bets: Bet[] | null;
@@ -48,6 +48,7 @@ export interface Game {
   away_team: string;
   goals_home: number | null;
   goals_away: number | null;
+  multiplier: number | null;
   date: string;
   time: string;
 }
@@ -58,4 +59,5 @@ export interface Bet {
   game_id: number;
   goals_home: number;
   goals_away: number;
+  points_gained: number;
 }

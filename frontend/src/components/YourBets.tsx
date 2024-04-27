@@ -46,7 +46,7 @@ const YourBets = ({ bets, users, games }: YourBetsProps) => {
           spy={true}
           smooth={true}
           duration={500}
-          className="rounded-full  bg-black text-white p-7 hover:bg-red-600 transition-all duration-300 ease-in-out cursor-pointer"
+          className="rounded-full  bg-black text-white p-5 hover:bg-red-600 transition-all duration-300 ease-in-out cursor-pointer scale-75"
         >
           <img src="/downArrow.png" alt="arrow" className="w-[50px] h-[50px]" />
         </ScrollLink>
