@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { BetSectionProps } from "../../types";
@@ -28,13 +27,13 @@ const BetSection = ({ games }: BetSectionProps) => {
   return (
     <div
       id="betSection"
-      className="relative h-screen w-full flex flex-col items-center justify-center gap-10"
+      className="relative min-h-screen w-full flex flex-col items-center justify-center gap-10"
     >
       <h1 className="px-5 py-3 text-[36px] bg-red-600 dela-font text-white rounded-md">
         Place Your Bets
       </h1>
       <p>Click on particular game to predict its score</p>
-      <div className="flex gap-10 justify-center w-full ml-5">
+      <div className="flex flex-wrap gap-10 justify-center w-full ml-5">
         {games?.map((game, index) => {
           if (isBeforeGameTime(game.date, game.time)) {
             return (

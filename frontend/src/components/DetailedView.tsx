@@ -28,6 +28,15 @@ const DetailedView: React.FC<DetailedViewProps> = ({ bets, games, users }) => {
             </tr>
           </thead>
           <tbody className="text-gray-700">
+            <tr className="text-blue-600 font-bold">
+              <td></td>
+              <td className="text-center">SCORE</td>
+              {[...games].reverse().map((game) => (
+                <td className="text-center">
+                  {game.goals_home}-{game.goals_away}
+                </td>
+              ))}
+            </tr>
             <tr className="text-blue-600 font-bold border-b">
               <td></td>
               <td className="text-center">Points Multiplier</td>
@@ -53,7 +62,7 @@ const DetailedView: React.FC<DetailedViewProps> = ({ bets, games, users }) => {
                   return (
                     <td key={game.id} className="px-4 py-2 text-center">
                       {userBet
-                        ? `${userBet.goals_home}-${userBet.goals_away}(${
+                        ? `${userBet.goals_home}-${userBet.goals_away} (${
                             userBet.points_gained ? userBet.points_gained : 0
                           }p.)`
                         : "No Bet"}
@@ -62,16 +71,6 @@ const DetailedView: React.FC<DetailedViewProps> = ({ bets, games, users }) => {
                 })}
               </tr>
             ))}
-            <tr className="text-blue-600 font-bold">
-              <td></td>
-              <td className="text-center">SCORE</td>
-
-              {[...games].reverse().map((game) => (
-                <td className="text-center">
-                  {game.goals_home}-{game.goals_away}
-                </td>
-              ))}
-            </tr>
           </tbody>
         </table>
       </div>

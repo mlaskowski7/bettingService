@@ -38,12 +38,12 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
         />
       </div>
       <button
-        className="px-4 py-2 w-[15%] bg-red-600 rounded-lg text-white hover:brightness-90"
+        className="px-4 py-2 w-[15%] max-sm:w-[50%] bg-red-600 rounded-lg text-white hover:brightness-90"
         type="submit"
       >
         Login
       </button>
-      <button className="px-4 py-2 w-[15%] bg-blue-600 rounded-lg text-white hover:brightness-90">
+      <button className="px-4 py-2 w-[15%] max-sm:w-[50%] bg-blue-600 rounded-lg text-white hover:brightness-90">
         <Link to={"/register"}>Register New Account</Link>
       </button>
     </form>

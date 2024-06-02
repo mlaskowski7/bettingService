@@ -12,7 +12,7 @@ const NewGame = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/games", {
+      const response = await axios.post("http://bets4free.online/api/games", {
         home_team: home,
         away_team: away,
         date: date,
@@ -79,12 +79,12 @@ const NewGame = () => {
         />
       </div>
       <button
-        className="px-4 py-2 w-[15%] bg-red-600 rounded-lg text-white hover:brightness-90"
+        className="px-4 py-2 w-[15%] max-sm:w-[50%] max-sm:w-[50%] bg-red-600 rounded-lg text-white hover:brightness-90"
         type="submit"
       >
         Add Game
       </button>
-      <button className="px-4 py-2 w-[15%] bg-blue-600 rounded-lg text-white hover:brightness-90">
+      <button className="px-4 py-2 w-[15%] max-sm:w-[50%] max-sm:w-[50%] bg-blue-600 rounded-lg text-white hover:brightness-90">
         <Link to={"/admin"}>Back To Admin Panel</Link>
       </button>
     </form>

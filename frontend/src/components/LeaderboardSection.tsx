@@ -1,4 +1,3 @@
-import React from "react";
 import { LeaderboardProps } from "../../types";
 import { Link as ScrollLink } from "react-scroll";
 import { Link } from "react-router-dom";

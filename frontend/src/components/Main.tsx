@@ -1,4 +1,3 @@
-import React from "react";
 import { MainProps } from "../../types";
 import { LeaderboardSection, Navbar, YourBets } from ".";
 import Hero from "./Hero";

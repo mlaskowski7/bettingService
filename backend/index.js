@@ -8,7 +8,7 @@ require("dotenv").config({ path: "./.env.local" });
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://bets4free.online"],
     credentials: true,
   })
 );

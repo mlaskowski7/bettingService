@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Game } from "../../types";
 import "../app.css";
 import axios from "axios";
@@ -10,7 +10,7 @@ const MainDashboard = () => {
   const deleteGame = async (gameId: number) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/game/${gameId}`
+        `http://bets4free.online/api/game/${gameId}`
       );
 
       if (response.status === 200) {
@@ -26,7 +26,7 @@ const MainDashboard = () => {
   useEffect(() => {
     const getGames = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/games");
+        const response = await axios.get("http://bets4free.online/api/games");
         setGames(response.data);
       } catch (error) {
         alert("Failed to fetch games - something is wrong");

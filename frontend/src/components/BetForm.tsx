@@ -32,7 +32,7 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
   useEffect(() => {
     const getGame = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/games");
+        const response = await axios.get("http://bets4free.online/api/games");
         const foundGame = response.data.find(
           (game: Game) => game.id === Number(id)
         );
@@ -63,9 +63,9 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
     );
     try {
       if (currentBet) {
-        await axios.delete(`http://localhost:3000/api/bet/${currentBet?.id}`);
+        await axios.delete(`http://bets4free.online/api/bet/${currentBet?.id}`);
       }
-      await axios.post(`http://localhost:3000/api/bets`, {
+      await axios.post(`http://bets4free.online/api/bets`, {
         user_id: user_id,
         game_id: game_id,
         goals_home: goals_home,
@@ -113,12 +113,12 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
         />
       </div>
       <button
-        className="px-4 py-2 w-[15%] bg-red-600 rounded-lg text-white hover:brightness-90"
+        className="px-4 py-2 w-[15%] max-sm:w-[50%] bg-red-600 rounded-lg text-white hover:brightness-90"
         type="submit"
       >
         Place Bet
       </button>
-      <button className="px-4 py-2 w-[15%] bg-blue-600 rounded-lg text-white hover:brightness-90">
+      <button className="px-4 py-2 w-[15%] max-sm:w-[50%] bg-blue-600 rounded-lg text-white hover:brightness-90">
         <Link to={"/"}>Back To Main Dashboard</Link>
       </button>
     </form>

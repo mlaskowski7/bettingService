@@ -10,10 +10,31 @@ const Hero = ({ user, games, bets, users }: HeroProps) => {
 
   const loggedUser = users?.find((element) => element.username === user);
 
+  const isBeforeGameTime = (gameDate: string, gameTime: string): boolean => {
+    const date = gameDate.split("T");
+    // Combine the date and time into a full ISO 8601 date-time string
+    const combinedDateTime = `${date[0]}T${gameTime}`; // Adding seconds and milliseconds
+
+    try {
+      const gameDateTime = new Date(combinedDateTime);
+      const now = new Date();
+
+      // Check if the gameDateTime is valid
+      if (isNaN(gameDateTime.getTime())) {
+        throw new Error("Invalid game date or time");
+      }
+
+      return now < gameDateTime;
+    } catch (error) {
+      console.error(error);
+      return false; // Return false if there was an error
+    }
+  };
+
   return (
     <div
       id="hero"
-      className="h-screen relative flex flex-col justify-center items-center gap-20 max-sm:mt-20"
+      className="min-h-screen relative flex flex-col justify-center items-center gap-20 max-sm:mt-20"
     >
       <div className="flex justify-between max-sm:flex-col mx-40 items-center gap-20">
         <div className="flex flex-col justify-center items-center">
@@ -29,7 +50,7 @@ const Hero = ({ user, games, bets, users }: HeroProps) => {
             className="w-[150px] h-[150px] hover:opacity-70 transition-all ease-in-out duration-300"
           />
         </div>
-        <div>
+        <div className="mt-56">
           <h1 className="font-bold text-[30px] text-left flex items-center justify-start gap-4 mb-5">
             <img
               src="/game.png"
@@ -40,42 +61,44 @@ const Hero = ({ user, games, bets, users }: HeroProps) => {
           </h1>
           <div className="flex flex-start align-left gap-2 flex-col max-sm:w-100">
             {games?.map((game, index) => {
-              const bet = bets?.find(
-                (bet) =>
-                  bet.user_id === loggedUser?.id && bet.game_id == game.id
-              );
-              if (!game.goals_home && !game.goals_away && bet) {
-                return (
-                  <p
-                    key={index}
-                    className="flex flex-col text-[16px] text-left items-start"
-                  >
-                    {game.home_team} vs. {game.away_team} on{" "}
-                    {formatDate(game.date)} ({game.time})
-                    <Link
-                      to={`/bets/${game.id}`}
-                      className="bg-red-600 px-2 py-1 rounded-xl text-white ml-2 hover:brightness-95 transition-all ease-in-out duration-300"
-                    >
-                      You placed {bet.goals_home} - {bet.goals_away}
-                    </Link>
-                  </p>
+              if (isBeforeGameTime(game.date, game.time)) {
+                const bet = bets?.find(
+                  (bet) =>
+                    bet.user_id === loggedUser?.id && bet.game_id == game.id
                 );
-              } else if (!game.goals_home && !game.goals_away) {
-                return (
-                  <p
-                    key={index}
-                    className="flex flex-col text-[16px] text-left items-start"
-                  >
-                    {game.home_team} vs. {game.away_team} on{" "}
-                    {formatDate(game.date)} ({game.time})
-                    <Link
-                      to={`/bets/${game.id}`}
-                      className="bg-blue-400 px-2 py-1 rounded-xl text-white ml-2 hover:brightness-95 transition-all ease-in-out duration-300"
+                if (!game.goals_home && !game.goals_away && bet) {
+                  return (
+                    <p
+                      key={index}
+                      className="flex flex-col text-[16px] text-left items-start"
                     >
-                      Place a Bet
-                    </Link>
-                  </p>
-                );
+                      {game.home_team} vs. {game.away_team} on{" "}
+                      {formatDate(game.date)} ({game.time})
+                      <Link
+                        to={`/bets/${game.id}`}
+                        className="bg-red-600 px-2 py-1 rounded-xl text-white ml-2 hover:brightness-95 transition-all ease-in-out duration-300"
+                      >
+                        You placed {bet.goals_home} - {bet.goals_away}
+                      </Link>
+                    </p>
+                  );
+                } else if (!game.goals_home && !game.goals_away) {
+                  return (
+                    <p
+                      key={index}
+                      className="flex flex-col text-[16px] text-left items-start"
+                    >
+                      {game.home_team} vs. {game.away_team} on{" "}
+                      {formatDate(game.date)} ({game.time})
+                      <Link
+                        to={`/bets/${game.id}`}
+                        className="bg-blue-400 px-2 py-1 rounded-xl text-white ml-2 hover:brightness-95 transition-all ease-in-out duration-300"
+                      >
+                        Place a Bet
+                      </Link>
+                    </p>
+                  );
+                }
               }
             })}
           </div>

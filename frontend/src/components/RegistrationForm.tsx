@@ -5,10 +5,15 @@ import { Link } from "react-router-dom";
 const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [masterPassword, setMasterPassword] = useState("");
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    onRegister(username, password);
+    if (masterPassword === "qwerty!") {
+      onRegister(username, password);
+    } else {
+      alert("Provided master password was incorrect");
+    }
   };
 
   return (
@@ -37,14 +42,23 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
+      <div>
+        <label className="font-bold">Master Password:</label>
+        <input
+          className="ml-5 bg-transparent border-2 border-white rounded-lg"
+          type="password"
+          value={masterPassword}
+          onChange={(e) => setMasterPassword(e.target.value)}
+        />
+      </div>
       <button
-        className="px-4 py-2 w-[15%] bg-blue-600 rounded-lg text-white hover:brightness-90"
+        className="px-4 py-2 w-[15%] max-sm:w-[50%] bg-blue-600 rounded-lg text-white hover:brightness-90"
         type="submit"
       >
         Register
       </button>
       <button
-        className="px-4 py-2 w-[15%] bg-red-600 rounded-lg text-white hover:brightness-90"
+        className="px-4 py-2 w-[15%] max-sm:w-[50%]  bg-red-600 rounded-lg text-white hover:brightness-90"
         type="submit"
       >
         <Link to={"/"}>Login to an existing account</Link>
