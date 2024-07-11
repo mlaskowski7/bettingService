@@ -26,6 +26,9 @@ export interface MainProps {
 
 export interface BetSectionProps {
   games: Game[] | null;
+  bets: Bet[] | null;
+  user: string;
+  users: User[] | null;
 }
 
 export interface LogoutFormProps {

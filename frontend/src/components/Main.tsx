@@ -8,9 +8,9 @@ const Main = ({ onLogout, user, games, users, bets }: MainProps) => {
     <div>
       <Navbar onLogout={onLogout} user={user} users={users} />
       <Hero user={user} games={games} bets={bets} users={users} />
-      <YourBets users={users} bets={bets} games={games} />
       <LeaderboardSection users={users} />
-      <BetSection games={games} />
+      <YourBets users={users} bets={bets} games={games} />
+      <BetSection games={games} bets={bets} user={user} users={users} />
     </div>
   );
 };

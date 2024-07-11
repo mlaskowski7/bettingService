@@ -31,6 +31,8 @@ const Hero = ({ user, games, bets, users }: HeroProps) => {
     }
   };
 
+  let gamesCounter = 0;
+
   return (
     <div
       id="hero"
@@ -61,11 +63,12 @@ const Hero = ({ user, games, bets, users }: HeroProps) => {
           </h1>
           <div className="flex flex-start align-left gap-2 flex-col max-sm:w-100">
             {games?.map((game, index) => {
-              if (isBeforeGameTime(game.date, game.time)) {
+              if (isBeforeGameTime(game.date, game.time) && gamesCounter <= 3) {
                 const bet = bets?.find(
                   (bet) =>
                     bet.user_id === loggedUser?.id && bet.game_id == game.id
                 );
+                gamesCounter++;
                 if (!game.goals_home && !game.goals_away && bet) {
                   return (
                     <p
@@ -73,7 +76,8 @@ const Hero = ({ user, games, bets, users }: HeroProps) => {
                       className="flex flex-col text-[16px] text-left items-start"
                     >
                       {game.home_team} vs. {game.away_team} on{" "}
-                      {formatDate(game.date)} ({game.time})
+                      {formatDate(game.date)} ({game.time.split(":")[0]}:
+                      {game.time.split(":")[1]})
                       <Link
                         to={`/bets/${game.id}`}
                         className="bg-red-600 px-2 py-1 rounded-xl text-white ml-2 hover:brightness-95 transition-all ease-in-out duration-300"
@@ -89,7 +93,8 @@ const Hero = ({ user, games, bets, users }: HeroProps) => {
                       className="flex flex-col text-[16px] text-left items-start"
                     >
                       {game.home_team} vs. {game.away_team} on{" "}
-                      {formatDate(game.date)} ({game.time})
+                      {formatDate(game.date)} ({game.time.split(":")[0]}:
+                      {game.time.split(":")[1]})
                       <Link
                         to={`/bets/${game.id}`}
                         className="bg-blue-400 px-2 py-1 rounded-xl text-white ml-2 hover:brightness-95 transition-all ease-in-out duration-300"

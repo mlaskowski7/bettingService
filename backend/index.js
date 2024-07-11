@@ -8,7 +8,7 @@ require("dotenv").config({ path: "./.env.local" });
 
 app.use(
   cors({
-    origin: ["http://bets4free.online"],
+    origin: ["http://localhost:5173"],
     credentials: true,
   })
 );
@@ -41,9 +41,18 @@ let users = [];
 
 app.get("/api/games", async (request, response) => {
   try {
-    const data = await pool.query('SELECT * FROM game ORDER BY "date"');
-    games = data.rows;
-    response.status(200).send(data.rows);
+    const data = await pool.query("SELECT * FROM game ORDER BY date,time");
+    games = data.rows.map((row) => {
+      // Ensure date is in UTC
+      const date = new Date(row.date);
+      return {
+        ...row,
+        date: new Date(
+          date.getTime() - date.getTimezoneOffset() * 60000
+        ).toISOString(),
+      };
+    });
+    response.status(200).send(games);
   } catch (error) {
     console.error(error);
     response.status(500).send();

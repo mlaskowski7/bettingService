@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Bet, User } from "../../types";
 
 // YOU HAVE TO ADD GAME ID FROM PARAMS THAT IS THE ONE THAT SHOULD BE UPDATED
@@ -20,11 +20,10 @@ interface BetFormProps {
 }
 
 const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
-  const [goals_home, setGoals_home] = useState<number>(0);
-  const [goals_away, setGoals_away] = useState<number>(0);
+  const [goals_home, setGoals_home] = useState<number | string>("");
+  const [goals_away, setGoals_away] = useState<number | string>("");
   const [user_id, setUser_id] = useState<number | null>(null);
   const [game, setGame] = useState<Game | null>(null);
-  const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
   const game_id = Number(id);
@@ -71,9 +70,9 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
         goals_home: goals_home,
         goals_away: goals_away,
       });
-      navigate("/");
+      window.location.href = "/";
     } catch (error) {
-      alert("Something went wrong");
+      alert("Something went wrong (Make sure to fill are the fields)");
       console.error(error);
     }
   };
@@ -100,7 +99,11 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
           className="ml-5 bg-transparent border-2 border-white rounded-lg"
           type="text"
           value={goals_home}
-          onChange={(e) => setGoals_home(Number(e.target.value))}
+          onChange={(e) => {
+            if (!isNaN(Number(e.target.value))) {
+              setGoals_home(Number(e.target.value));
+            }
+          }}
         />
       </div>
       <div>
@@ -109,7 +112,11 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
           className="ml-5 bg-transparent border-2 border-white rounded-lg"
           type="text"
           value={goals_away}
-          onChange={(e) => setGoals_away(Number(e.target.value))}
+          onChange={(e) => {
+            if (!isNaN(Number(e.target.value))) {
+              setGoals_away(Number(e.target.value));
+            }
+          }}
         />
       </div>
       <button

@@ -9,7 +9,7 @@ const RegistrationForm = ({ onRegister }: RegistrationFormProps) => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (masterPassword === "qwerty!") {
+    if (masterPassword === "#!ghjqwe!") {
       onRegister(username, password);
     } else {
       alert("Provided master password was incorrect");

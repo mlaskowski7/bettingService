@@ -48,47 +48,54 @@ const ScoresForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await axios.put(`http://bets4free.online/api/scores/${id}`, {
-        goals_home,
-        goals_away,
-      });
-    } catch (error) {
-      alert("Something went wrong");
-      console.error(error);
-    }
 
-    const loggedUser = localStorage.getItem("user") || "";
+    if (game?.goals_home == null && game?.goals_away == null) {
+      try {
+        await axios.put(`http://bets4free.online/api/scores/${id}`, {
+          goals_home,
+          goals_away,
+        });
+      } catch (error) {
+        alert("Something went wrong");
+        console.error(error);
+      }
 
-    if (game != null && loggedUser != "") {
-      const betsFiltered = bets.filter((bet) => bet.game_id == game.id);
+      const loggedUser = localStorage.getItem("user") || "";
 
-      for (const bet of betsFiltered) {
-        try {
-          if (goals_home == bet.goals_home && goals_away == bet.goals_away) {
-            await axios.put("http://bets4free.online/api/pointsScore", {
-              userId: bet.user_id,
-              gameId: game.id,
-              multiplier: game.multiplier,
-            });
-          } else if (
-            goals_home - goals_away > 0 ===
-              bet.goals_home - bet.goals_away > 0 &&
-            goals_home - goals_away < 0 === bet.goals_home - bet.goals_away < 0
-          ) {
-            await axios.put("http://bets4free.online/api/pointsWin", {
-              userId: bet.user_id,
-              gameId: game.id,
-              multiplier: game.multiplier,
-            });
+      if (game != null && loggedUser != "") {
+        const betsFiltered = bets.filter((bet) => bet.game_id == game.id);
+
+        for (const bet of betsFiltered) {
+          try {
+            if (goals_home == bet.goals_home && goals_away == bet.goals_away) {
+              await axios.put("http://bets4free.online/api/pointsScore", {
+                userId: bet.user_id,
+                gameId: game.id,
+                multiplier: game.multiplier,
+              });
+            } else if (
+              (goals_home > goals_away && bet.goals_home > bet.goals_away) ||
+              (goals_home < goals_away && bet.goals_home < bet.goals_away) ||
+              (goals_home == goals_away && bet.goals_home == bet.goals_away)
+            ) {
+              await axios.put("http://bets4free.online/api/pointsWin", {
+                userId: bet.user_id,
+                gameId: game.id,
+                multiplier: game.multiplier,
+              });
+            }
+          } catch (error) {
+            alert("Error while updating or deleting bet");
+            console.error(error);
           }
-        } catch (error) {
-          alert("Error while updating or deleting bet");
-          console.error(error);
         }
       }
+      alert("Scores have been updated. Now you can go back to main dashboard");
+      window.location.href = "/admin";
+    } else {
+      alert("This game has already been settled");
+      window.location.href = "/admin";
     }
-    alert("Scores have been updated. Now you can go back to main dashboard");
   };
 
   return (

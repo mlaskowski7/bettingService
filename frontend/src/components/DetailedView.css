@@ -1,0 +1,36 @@
+.table-wrapper {
+  display: flex;
+  width: 90%;
+}
+
+.fixed-table {
+  position: sticky;
+  left: 0;
+  background-color: white; /* Ensure the background matches the table */
+  z-index: 2;
+  border-right: 1px solid #ddd;
+  table-layout: fixed;
+  width: auto; /* Adjust width as needed */
+}
+
+.fixed-table th,
+.fixed-table td {
+  width: 150px; /* Ensure this matches the scrollable table columns */
+  box-shadow: 2px 0 5px -2px rgba(0, 0, 0, 0.2); /* Optional: Adds a shadow effect */
+}
+
+.scrollable-wrapper {
+  overflow-x: auto;
+  width: calc(100% - 300px); /* Adjust based on your fixed columns' width */
+}
+
+.scrollable-table {
+  min-width: 100%;
+  table-layout: fixed;
+}
+
+.scrollable-table th,
+.scrollable-table td {
+  width: 150px; /* Ensure this matches the fixed table columns */
+  white-space: nowrap;
+}

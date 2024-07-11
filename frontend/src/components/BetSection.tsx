@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
-import { BetSectionProps } from "../../types";
+import { BetSectionProps, Game } from "../../types";
 import { RefreshButton } from ".";
 
-const BetSection = ({ games }: BetSectionProps) => {
+const BetSection = ({ games, bets, user, users }: BetSectionProps) => {
   const isBeforeGameTime = (gameDate: string, gameTime: string): boolean => {
     const date = gameDate.split("T");
     // Combine the date and time into a full ISO 8601 date-time string
@@ -24,6 +24,16 @@ const BetSection = ({ games }: BetSectionProps) => {
       return false; // Return false if there was an error
     }
   };
+
+  const isBetPlaced = (game: Game): boolean => {
+    const userObject = users?.find((current) => current.username == user);
+    const userBets = bets?.filter((bet) => bet.user_id == userObject?.id);
+    if (userBets?.find((bet) => bet.game_id == game.id)) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <div
       id="betSection"
@@ -35,7 +45,7 @@ const BetSection = ({ games }: BetSectionProps) => {
       <p>Click on particular game to predict its score</p>
       <div className="flex flex-wrap gap-10 justify-center w-full ml-5">
         {games?.map((game, index) => {
-          if (isBeforeGameTime(game.date, game.time)) {
+          if (isBeforeGameTime(game.date, game.time) && !isBetPlaced(game)) {
             return (
               <Link
                 to={`/bets/${game.id}`}
@@ -43,6 +53,9 @@ const BetSection = ({ games }: BetSectionProps) => {
                 className="dela-font hover:text-blue-400 transition-all ease-in-out duration-300"
               >
                 {game.home_team} vs. {game.away_team}
+                <span className="text-red-600 font-bold">
+                  (x{game.multiplier})
+                </span>
               </Link>
             );
           }

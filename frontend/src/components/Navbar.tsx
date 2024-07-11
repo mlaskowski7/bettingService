@@ -24,6 +24,16 @@ const Navbar = ({ onLogout, user, users }: LogoutFormProps) => {
         )}
 
         <ScrollLink
+          to="leaderboard"
+          spy={true}
+          smooth={true}
+          duration={500}
+          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer max-sm:hidden"
+        >
+          LEADERBOARD
+        </ScrollLink>
+
+        <ScrollLink
           to="yourBetsSection"
           spy={true}
           smooth={true}
@@ -33,15 +43,6 @@ const Navbar = ({ onLogout, user, users }: LogoutFormProps) => {
           YOUR BETS
         </ScrollLink>
 
-        <ScrollLink
-          to="leaderboard"
-          spy={true}
-          smooth={true}
-          duration={500}
-          className="hover:underline underline-offset-4 transition-all ease-in-out duration-300 cursor-pointer max-sm:hidden"
-        >
-          LEADERBOARD
-        </ScrollLink>
         <ScrollLink
           to="betSection"
           spy={true}

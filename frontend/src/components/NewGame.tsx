@@ -15,11 +15,14 @@ const NewGame = () => {
       const response = await axios.post("http://bets4free.online/api/games", {
         home_team: home,
         away_team: away,
-        date: date,
+        date: date.replace("T00", "T02"),
         time: time,
         multiplier: multiplier,
       });
-      if (response) alert("The game has been successfully added");
+      if (response) {
+        alert("The game has been successfully added");
+        window.location.reload();
+      }
     } catch (error) {
       console.error(error);
       alert("Something went wrong");
@@ -74,6 +77,7 @@ const NewGame = () => {
         <input
           className="ml-5 bg-transparent border-2 border-white rounded-lg"
           type="time"
+          step="900"
           value={time}
           onChange={(e) => setTime(e.target.value)}
         />

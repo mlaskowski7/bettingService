@@ -12,7 +12,7 @@ const LeaderboardSection = ({ users }: LeaderboardProps) => {
       <h1 className="px-5 py-3 text-[36px] bg-blue-400 dela-font text-white rounded-md">
         Leaderboard
       </h1>
-      <div className="flex gap-10 justify-between">
+      <div className="flex max-sm:flex-col gap-10 max-sm:gap-2 max-sm:justify-center justify-between">
         <div className="flex flex-col justify-center items-center text-center">
           <h1 className="text-[24px] dela-font">Winners:</h1>
           {users?.map((user, index) => {
