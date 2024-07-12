@@ -29,7 +29,7 @@ const App = () => {
 
     const getUsers = async () => {
       try {
-        const response = await axios.get("http://bets4free.online/api/users");
+        const response = await axios.get("http://localhost:3000/api/users");
         setUsers(response.data);
       } catch (error) {
         alert("Failed to fetch users - something is wrong");
@@ -39,7 +39,7 @@ const App = () => {
 
     const getGames = async () => {
       try {
-        const response = await axios.get("http://bets4free.online/api/games");
+        const response = await axios.get("http://localhost:3000/api/games");
         setGames(response.data);
       } catch (error) {
         alert("Failed to fetch games - something is wrong");
@@ -49,7 +49,7 @@ const App = () => {
 
     const getBets = async () => {
       try {
-        const response = await axios.get("http://bets4free.online/api/bets");
+        const response = await axios.get("http://localhost:3000/api/bets");
         setBets(response.data);
       } catch (error) {
         alert("Failed to fetch games - something is wrong");
@@ -64,7 +64,7 @@ const App = () => {
 
   const handleLogin = async (username: string, password: string) => {
     try {
-      await axios.post("http://bets4free.online/api/users/login", {
+      await axios.post("http://localhost:3000/api/users/login", {
         username,
         password,
       });
@@ -81,7 +81,7 @@ const App = () => {
 
   const handleRegister = async (username: string, password: string) => {
     try {
-      await axios.post("http://bets4free.online/api/users", {
+      await axios.post("http://localhost:3000/api/users", {
         username,
         password,
       });

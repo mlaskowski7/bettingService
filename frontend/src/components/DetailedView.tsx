@@ -9,6 +9,27 @@ interface DetailedViewProps {
   users: User[];
 }
 
+const isBeforeGameTime = (gameDate: string, gameTime: string): boolean => {
+  const date = gameDate.split("T");
+  // Combine the date and time into a full ISO 8601 date-time string
+  const combinedDateTime = `${date[0]}T${gameTime}`; // Adding seconds and milliseconds
+
+  try {
+    const gameDateTime = new Date(combinedDateTime);
+    const now = new Date();
+
+    // Check if the gameDateTime is valid
+    if (isNaN(gameDateTime.getTime())) {
+      throw new Error("Invalid game date or time");
+    }
+
+    return now < gameDateTime;
+  } catch (error) {
+    console.error(error);
+    return false; // Return false if there was an error
+  }
+};
+
 const DetailedView: React.FC<DetailedViewProps> = ({ bets, games, users }) => {
   return (
     <div className="w-screen min-h-screen flex flex-col gap-6 justify-center items-center">
@@ -100,7 +121,9 @@ const DetailedView: React.FC<DetailedViewProps> = ({ bets, games, users }) => {
                         key={`bet-${user.id}-${game.id}`}
                         className="px-4 py-2 text-center"
                       >
-                        {userBet
+                        {isBeforeGameTime(game.date, game.time)
+                          ? "?"
+                          : userBet
                           ? `${userBet.goals_home}-${userBet.goals_away} (${
                               userBet.points_gained ? userBet.points_gained : 0
                             }p.)`

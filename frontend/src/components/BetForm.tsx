@@ -24,6 +24,12 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
   const [goals_away, setGoals_away] = useState<number | string>("");
   const [user_id, setUser_id] = useState<number | null>(null);
   const [game, setGame] = useState<Game | null>(null);
+  const [currentHome, setCurrentHome] = useState<number | string | undefined>(
+    ""
+  );
+  const [currentAway, setCurrentAway] = useState<number | string | undefined>(
+    ""
+  );
 
   const { id } = useParams<{ id: string }>();
   const game_id = Number(id);
@@ -31,7 +37,7 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
   useEffect(() => {
     const getGame = async () => {
       try {
-        const response = await axios.get("http://bets4free.online/api/games");
+        const response = await axios.get("http://localhost:3000/api/games");
         const foundGame = response.data.find(
           (game: Game) => game.id === Number(id)
         );
@@ -52,8 +58,20 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
       (user) => user.username === localStorage.getItem("user")
     );
 
+    const currentBet = bets.find(
+      (bet) => bet.user_id === user_id && bet.game_id === game_id
+    );
+
+    if (currentBet) {
+      setCurrentHome(currentBet?.goals_home);
+      setCurrentAway(currentBet?.goals_away);
+    } else {
+      setCurrentHome("?");
+      setCurrentAway("?");
+    }
+
     if (loggedUser) setUser_id(loggedUser.id);
-  }, [users, id]);
+  }, [users, id, bets, user_id, game_id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,9 +80,9 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
     );
     try {
       if (currentBet) {
-        await axios.delete(`http://bets4free.online/api/bet/${currentBet?.id}`);
+        await axios.delete(`http://localhost:3000/api/bet/${currentBet?.id}`);
       }
-      await axios.post(`http://bets4free.online/api/bets`, {
+      await axios.post(`http://localhost:3000/api/bets`, {
         user_id: user_id,
         game_id: game_id,
         goals_home: goals_home,
@@ -93,6 +111,9 @@ const BetForm: React.FC<BetFormProps> = ({ users, bets }) => {
         Place your bet on game - {game?.home_team} vs. {game?.away_team} on{" "}
         {formatDate(game?.date)}
       </h2>
+      <h4 className="mt-3 text-[16px] text-blue-600">
+        Your current bet: {currentHome} - {currentAway}
+      </h4>
       <div className="">
         <label className="font-bold">{game?.home_team} : </label>
         <input

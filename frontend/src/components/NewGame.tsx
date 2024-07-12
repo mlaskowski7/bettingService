@@ -12,7 +12,7 @@ const NewGame = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://bets4free.online/api/games", {
+      const response = await axios.post("http://localhost:3000/api/games", {
         home_team: home,
         away_team: away,
         date: date.replace("T00", "T02"),

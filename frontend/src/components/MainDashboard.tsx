@@ -10,7 +10,7 @@ const MainDashboard = () => {
   const deleteGame = async (gameId: number) => {
     try {
       const response = await axios.delete(
-        `http://bets4free.online/api/game/${gameId}`
+        `http://localhost:3000/api/game/${gameId}`
       );
 
       if (response.status === 200) {
@@ -26,7 +26,7 @@ const MainDashboard = () => {
   useEffect(() => {
     const getGames = async () => {
       try {
-        const response = await axios.get("http://bets4free.online/api/games");
+        const response = await axios.get("http://localhost:3000/api/games");
         setGames(response.data);
       } catch (error) {
         alert("Failed to fetch games - something is wrong");

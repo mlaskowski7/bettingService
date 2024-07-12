@@ -16,7 +16,7 @@ const ScoresForm = () => {
   useEffect(() => {
     const getGame = async () => {
       try {
-        const response = await axios.get("http://bets4free.online/api/games");
+        const response = await axios.get("http://localhost:3000/api/games");
         const foundGame = response.data.find(
           (game: Game) => game.id === Number(id)
         );
@@ -34,7 +34,7 @@ const ScoresForm = () => {
 
     const getBets = async () => {
       try {
-        const response = await axios.get("http://bets4free.online/api/bets");
+        const response = await axios.get("http://localhost:3000/api/bets");
         setBets(response.data);
       } catch (error) {
         alert("Something went wrong with getting bets data");
@@ -51,7 +51,7 @@ const ScoresForm = () => {
 
     if (game?.goals_home == null && game?.goals_away == null) {
       try {
-        await axios.put(`http://bets4free.online/api/scores/${id}`, {
+        await axios.put(`http://localhost:3000/api/scores/${id}`, {
           goals_home,
           goals_away,
         });
@@ -68,7 +68,7 @@ const ScoresForm = () => {
         for (const bet of betsFiltered) {
           try {
             if (goals_home == bet.goals_home && goals_away == bet.goals_away) {
-              await axios.put("http://bets4free.online/api/pointsScore", {
+              await axios.put("http://localhost:3000/api/pointsScore", {
                 userId: bet.user_id,
                 gameId: game.id,
                 multiplier: game.multiplier,
@@ -78,7 +78,7 @@ const ScoresForm = () => {
               (goals_home < goals_away && bet.goals_home < bet.goals_away) ||
               (goals_home == goals_away && bet.goals_home == bet.goals_away)
             ) {
-              await axios.put("http://bets4free.online/api/pointsWin", {
+              await axios.put("http://localhost:3000/api/pointsWin", {
                 userId: bet.user_id,
                 gameId: game.id,
                 multiplier: game.multiplier,
